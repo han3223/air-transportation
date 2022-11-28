@@ -1,0 +1,42 @@
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+div {
+	margin: 0 auto 20px auto;
+	text-align: center;
+}
+
+form {
+	width: 50%;
+	margin: 0 auto;
+}
+
+p, button {
+	font-family: Biennale, serif;
+	font-size: 160%;
+	margin: 0 0 10px 0;
+}
+
+button {
+	width: 50%;
+}
+
+input {
+	width: 100%;
+	padding: 0;
+	height: 40px;
+	border: none;
+	margin: 5px 0 0 0;
+}
+
+#main_div {
+	width: 80%;
+	height: 100vh;
+	background-color: #064d82;
+}
+
+
+

@@ -1,11 +1,14 @@
 package com.example.plugins
 
-import io.ktor.server.routing.*
-import io.ktor.http.*
+import com.example.frontend.getHomepageAdminRouting
+import com.example.frontend.getHomepageEmployeeRouting
+import com.example.frontend.getHomepageRouting
+import com.example.frontend.getHomepageUserRouting
 import io.ktor.server.application.*
-import io.ktor.server.freemarker.*
-import io.ktor.server.response.*
-import io.ktor.server.request.*
 
 fun Application.configureRouting() {
+    getHomepageRouting()
+    getHomepageUserRouting()
+    getHomepageAdminRouting()
+    getHomepageEmployeeRouting()
 }

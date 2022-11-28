@@ -11,7 +11,6 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 
-
 fun Application.myapp() {
     configureRouting()
     configureTemplating()
@@ -74,6 +73,7 @@ fun Application.myapp() {
 //        }
 //    }
 }
+
 
 fun main() {
     embeddedServer(
