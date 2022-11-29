@@ -13,9 +13,9 @@
 <body>
 
     <div id="main_div">
-        <form action="">
+        <form action="/user/admin_name" method="post">
             <input type="email" name="email" id="">
-            <select>
+            <select name="select_role">
                 <option>Администратор</option>
                 <option>Сотрудник</option>
                 <option>Обычный пользователь</option>

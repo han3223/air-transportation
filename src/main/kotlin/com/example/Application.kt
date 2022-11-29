@@ -10,6 +10,8 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 
 fun Application.myapp() {
     configureRouting()
@@ -30,6 +32,7 @@ fun Application.myapp() {
     val daoLocationType: DAOLocationType = DAOLocationTypeImpl()
     val daoPassengers: DAOPassengers = DAOPassengersImpl()
     val daoUser: DAOUser = DAOUserImpl()
+
 
 //    val dao: DAOFacadeCarrier = DAOCarrierImpl().apply {
 //        runBlocking {

@@ -2,14 +2,17 @@ package com.example.frontend
 
 import com.example.database.dao.DAOUser
 import com.example.database.dao.DAOUserImpl
+import com.example.database.dataClass.User
+import com.example.database.dataClass.Users
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import java.util.Locale
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 fun Route.getHomepage() {
     val daoUser: DAOUser = DAOUserImpl()
@@ -17,29 +20,32 @@ fun Route.getHomepage() {
     route("") {
         get("") {
             call.respond(FreeMarkerContent("homepage.ftl", mapOf("first_name" to "Твой", "last_name" to "Профиль")))
+
         }
         post("/") {
             val params = call.receiveParameters()
-            val firstName = params["first_name"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-            val lastName = params["last_name"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+            var firstName = params["first_name"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+            var lastName = params["last_name"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             val email = params["email"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             val password = params["password"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             val phone = params["phone"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+            firstName = translate(firstName)
+            lastName = translate(lastName)
             daoUser.apply {
                 runBlocking {
                     addNewUser(firstName, lastName, email, password, phone)
                 }
             }
-            call.respond(FreeMarkerContent("homepage.ftl", null))
+            call.respond(FreeMarkerContent("homepage.ftl", mapOf("first_name" to firstName, "last_name" to lastName)))
         }
         post("/user") {
             val params = call.receiveParameters()
             val login = params["email_login"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             val password = params["password_login"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-            val userArray = daoUser.getLoginAndPasswordUser(login, password)
-            translate("ivan")
-            when(userArray[2]) {
-                "user" -> call.respondRedirect("/user/${translate(userArray[0])}/${translate(userArray[1])}")
+            val user = daoUser.user(login, password)
+
+            when(user?.role) {
+                "user" -> call.respondRedirect("/user/${user.firstName}/${user.lastName}")
                 "admin" -> call.respondRedirect("/user/admin_name")
                 "employee" -> call.respondRedirect("user/employee_name")
             }
@@ -114,6 +120,8 @@ fun translate(text: String): String {
             'я' -> buffText += "ya"
         }
     }
-    println(buffText)
-    return buffText
+
+    return if (buffText != "")
+        buffText
+    else text
 }

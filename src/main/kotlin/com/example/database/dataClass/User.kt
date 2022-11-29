@@ -3,13 +3,6 @@ package com.example.database.dataClass
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 
-data class UserLoginPassword(val firstName: String,
-                             val lastName: String,
-                             val email: String,
-                             val password: String,
-                             val role: String)
-
-data class UserEmail(val email: String)
 data class User(val id: Int? = null,
                 val firstName:String,
                 val lastName:String,
@@ -19,6 +12,7 @@ data class User(val id: Int? = null,
                 val role: String)
 
 object Users : Table() {
+
     val id: Column<Int> = integer("Id_user").autoIncrement()
     val firstName: Column<String> = varchar("First_name", 30)
     val lastName: Column<String> = varchar("Last_name", 40)
