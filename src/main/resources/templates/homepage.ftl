@@ -19,6 +19,8 @@
             <div id="div_form_reg">
                 <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 30px;">Регистрация</p>
                 <form action="/" id="form_reg" method="post">
+                    <input type="text" name="first_name" class="inp_reg" placeholder="Имя">
+                    <input type="text" name="last_name" class="inp_reg" placeholder="Фамилия">
                     <input type="text" name="phone" class="inp_reg" placeholder="Телефон">
                     <input type="email" name="email" class="inp_reg" placeholder="E-mail">
                     <input type="password" name="password" class="inp_reg" placeholder="Пароль">
@@ -137,10 +139,10 @@
                 </div>
                 <div id="name_acc">
                     <div id="first_name">
-                        <p class="prof" style="font-family: Biennale; font-size: 100%; float: inherit;">Твой</p>
+                        <p class="prof" style="font-family: Biennale; font-size: 100%; float: inherit;">${first_name}</p>
                     </div>
                     <div id="last_name">
-                        <p class="prof" style="font-family: Biennale; font-size: 100%; float: inherit;">Профиль</p>
+                        <p class="prof" style="font-family: Biennale; font-size: 100%; float: inherit;">${last_name}</p>
                     </div>
                 </div>
             </div>

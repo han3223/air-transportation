@@ -6,18 +6,25 @@ import com.example.database.dataClass.UserLoginPassword
 import com.example.database.dataClass.Users
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import java.io.Serializable
 
 interface DAOUser {
     suspend fun allUser(): List<User>
     suspend fun user(id: Int): User?
-    suspend fun addNewUser(email: String, password: String, phone: String): User?
+    suspend fun addNewUser(firstName:String,
+                           lastName:String,
+                           email: String,
+                           password: String,
+                           phone: String): User?
     suspend fun deleteUser(id: Int): Boolean
-    suspend fun getLoginAndPasswordUser(login: String, password: String): String
+    suspend fun getLoginAndPasswordUser(login: String, password: String): Array<String>
 }
 
 class DAOUserImpl : DAOUser{
     private fun resultRowToUser(row: ResultRow) = User(
         id = row[Users.id],
+        firstName = row[Users.firstName],
+        lastName = row[Users.lastName],
         email = row[Users.email],
         password = row[Users.password],
         phone = row[Users.phone],
@@ -25,25 +32,28 @@ class DAOUserImpl : DAOUser{
     )
 
     private fun getLogPass(row: ResultRow) = UserLoginPassword(
-        email = row[Users.email], password = row[Users.password], role = row[Users.role]
+        firstName = row[Users.firstName],
+        lastName = row[Users.lastName],
+        email = row[Users.email],
+        password = row[Users.password],
+        role = row[Users.role]
     )
 
-    override suspend fun getLoginAndPasswordUser(login: String, password: String): String {
+    override suspend fun getLoginAndPasswordUser(login: String, password: String): Array<String> {
         for (i in 0..mapUserLoginPassword().lastIndex) {
-            if (mapUserLoginPassword()[i] == UserLoginPassword(login, password, "user")) {
-                println("user")
-                return "user"
-            }
-            else if (mapUserLoginPassword()[i] == UserLoginPassword(login, password, "admin")) {
-                println("admin")
-                return "admin"
-            }
-            else if (mapUserLoginPassword()[i] == UserLoginPassword(login, password, "employee")) {
-                println("employee")
-                return "employee"
+            if (mapUserLoginPassword()[i].email == login && mapUserLoginPassword()[i].password == password) {
+                val arrNameRole: Array<String> = arrayOf(
+                    mapUserLoginPassword()[i].firstName,
+                    mapUserLoginPassword()[i].lastName,
+                    mapUserLoginPassword()[i].role)
+                when(mapUserLoginPassword()[i].role) {
+                    "user" -> return arrNameRole
+                    "admin" -> return arrNameRole
+                    "employee" -> return arrNameRole
+                }
             }
         }
-        return "null"
+        return emptyArray()
     }
     private suspend fun mapUserLoginPassword(): List<UserLoginPassword> = dbQuery {
         Users.selectAll().map(::getLogPass)
@@ -60,8 +70,14 @@ class DAOUserImpl : DAOUser{
             .singleOrNull()
     }
 
-    override suspend fun addNewUser(email: String, password: String, phone: String): User? = dbQuery {
+    override suspend fun addNewUser(firstName:String,
+                                    lastName:String,
+                                    email: String,
+                                    password: String,
+                                    phone: String): User? = dbQuery {
         val insertStatement = Users.insert {
+            it[Users.firstName] = firstName
+            it[Users.lastName] = lastName
             it[Users.email] = email
             it[Users.password] = password
             it[Users.phone] = phone

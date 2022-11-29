@@ -8,11 +8,11 @@ import io.ktor.server.routing.*
 fun Route.getHomepageEmployee() {
     route("/user") {
         get("/employee_name") {
-            call.respond(FreeMarkerContent("homepage.ftl", null))
+            call.respond(FreeMarkerContent("employeepage.ftl", null))
         }
     }
 }
 
 fun Application.getHomepageEmployeeRouting() {
-    routing { getHomepageUser() }
+    routing { getHomepageEmployee() }
 }
