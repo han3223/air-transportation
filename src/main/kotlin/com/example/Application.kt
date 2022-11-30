@@ -25,12 +25,7 @@ fun Application.myapp() {
     }
 
     val daoTicket: DAOTicket = DAOTicketImpl()
-    val daoAircraftBrand: DAOAircraftBrand = DAOAircraftBrandImpl()
-    val daoAirportDirectory: DAOAirportDirectory = DAOAirportDirectoryImpl()
-    val daoCarrier: DAOCarrier = DAOCarrierImpl()
-    val daoFlight: DAOFlight = DAOFlightImpl()
-    val daoLocationType: DAOLocationType = DAOLocationTypeImpl()
-    val daoPassengers: DAOPassengers = DAOPassengersImpl()
+
     val daoUser: DAOUser = DAOUserImpl()
 
 
