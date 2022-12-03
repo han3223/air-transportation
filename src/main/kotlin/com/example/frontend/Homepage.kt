@@ -19,7 +19,7 @@ fun Route.getHomepage() {
 
     route("") {
         get("") {
-            call.respond(FreeMarkerContent("homepage.ftl", mapOf("first_name" to "Твой", "last_name" to "Профиль")))
+            call.respond(FreeMarkerContent("homepage.ftl", null))
 
         }
         post("/") {
@@ -45,7 +45,7 @@ fun Route.getHomepage() {
             val user = daoUser.user(login, password)
 
             when(user?.role) {
-                "user" -> call.respondRedirect("/user/${user.firstName}/${user.lastName}")
+                "user" -> call.respondRedirect("/${user.firstName}/${user.lastName}")
                 "admin" -> call.respondRedirect("/user/admin_name")
                 "employee" -> call.respondRedirect("user/employee_name")
             }

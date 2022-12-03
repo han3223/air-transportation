@@ -13,12 +13,12 @@ fun Application.configureTemplating() {
         outputFormat = HTMLOutputFormat.INSTANCE
     }
 
-    routing {
-        get("/html-freemarker") {
-            call.respond(FreeMarkerContent("index.ftl", mapOf("data" to IndexData(listOf(1, 2, 3))), ""))
-
-        }
-    }
+//    routing {
+//        get("/html-freemarker") {
+//            call.respond(FreeMarkerContent("index.ftl", mapOf("data" to IndexData(listOf(1, 2, 3))), ""))
+//        }
+//    }
 }
 
-data class IndexData(val items: List<Int>)
+//data class IndexData(val items: Int)
+data class IndexData(val item: List<String>)

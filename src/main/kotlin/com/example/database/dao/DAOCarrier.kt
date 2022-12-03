@@ -11,6 +11,7 @@ interface DAOCarrier {
     suspend fun addNewCarrier(name: String): Carrier?
     suspend fun editCarrier(id: Int, name: String): Boolean
     suspend fun deleteCarrier(id: Int): Boolean
+    suspend fun getCarrierList(id: Int): List<Carrier>
 }
 
 class DAOCarrierImpl : DAOCarrier {
@@ -28,6 +29,12 @@ class DAOCarrierImpl : DAOCarrier {
             .select { Carriers.id eq id}
             .map(::resultRowToCarrier)
             .singleOrNull()
+    }
+
+    override suspend fun getCarrierList(id: Int): List<Carrier> = dbQuery {
+        Carriers
+            .select { Carriers.id eq id}
+            .map(::resultRowToCarrier)
     }
 
     override suspend fun addNewCarrier(name: String): Carrier? = dbQuery {

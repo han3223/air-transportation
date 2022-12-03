@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 interface DAOAirportDirectory {
     suspend fun allAirportDirectory(): List<AirportDirectory>
-    suspend fun airportDirectory(code_airport: Int): AirportDirectory?
+    suspend fun airportDirectory(airport_name: String): AirportDirectory?
     suspend fun addNewAirportDirectory(city: String, airport_name: String): AirportDirectory?
     suspend fun deleteAirportDirectory(code_airport: Int): Boolean
 }
@@ -24,9 +24,9 @@ class DAOAirportDirectoryImpl : DAOAirportDirectory {
         AirportsDirectory.selectAll().map(::resultRowToAirportDirectory)
     }
 
-    override suspend fun airportDirectory(code_airport: Int): AirportDirectory? = dbQuery {
+    override suspend fun airportDirectory(airport_name: String): AirportDirectory? = dbQuery {
         AirportsDirectory
-            .select { AirportsDirectory.code_airport eq code_airport }
+            .select { AirportsDirectory.airport_name eq airport_name }
             .map(::resultRowToAirportDirectory)
             .singleOrNull()
     }

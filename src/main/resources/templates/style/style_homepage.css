@@ -345,6 +345,7 @@ input[type="radio"]:checked {
     width: 75%;
     margin: 100px auto 0 auto;
     float: left;
+    max-width: 1100px;
 }
 
 /*блок с популярными рейсами*/
@@ -471,13 +472,167 @@ input[type="radio"]:checked+.rad-design::before {
 
 #question {
     width: 62.5%;
-    aspect-ratio: 1/1;
+    min-height: 70px;
+    /*aspect-ratio: 1/1;*/
     background-color: #9ba9c9;
     float: right;
     border-radius: 5px;
     border: 1px solid;
     box-shadow: 1px 1px 10px 0 black;
     margin-top: 70px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+}
+
+/*блок с рейсами*/
+
+#flight_div {
+    width: 94%;
+    border-radius: 10px;
+    background-color: white;
+    margin: 10px auto 0;
+    display: flex;
+}
+
+/*Цена билета*/
+
+#buy_ticket {
+    width: 100%;
+    height: 100%;
+    float: left;
+    display: flex;
+}
+
+#center_div_buy_ticket {
+    width: 80%;
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#price {
+    width: 100%;
+    text-align: center;
+
+}
+
+#price>p {
+    font-family: Biennale bold;
+    font-size: 150%;
+}
+
+#location_type {
+    width: 100%;
+    text-align: center;
+    margin-top: -10px;
+}
+
+#location_type>p {
+    font-family: Biennale bold;
+    font-size: 65%;
+    color: grey;
+}
+
+#input_buy_ticket {
+    width: 100%;
+    border: none;
+    height: 40px;
+    background-color: #e87f2c;
+    border-radius: 5px;
+    font-family: Biennale;
+    font-size: 140%;
+    margin-bottom: 10px;
+}
+
+/*Информация по рейсу*/
+
+#information_ticket {
+    width: 70%;
+    height: 100%;
+    float: right;
+}
+
+#carrier {
+    width: 90%;
+    height: 40px;
+    margin: 10px auto;
+}
+
+#logo_carrier {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: grey;
+    float: left;
+    margin: 0 10px 0 0;
+}
+
+#name_carrier {
+    width: 100px;
+    height: 40px;
+    float: left;
+}
+
+#name_carrier>p {
+    font-family: Biennale bold;
+    font-size: 150%;
+}
+
+#info_flight {
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+}
+
+#time_departure {
+    width: 20%;
+}
+
+#total_time {
+    width: 60%;
+}
+
+#time_arrival {
+    width: 20%;
+}
+
+#time {
+    width: 100%;
+    text-align: center;
+}
+
+#time>p {
+    font-family: Biennale bold;
+    font-size: 150%;
+}
+
+#city {
+    width: 100%;
+    text-align: center;
+}
+
+#city>p {
+    font-family: Biennale bold;
+    font-size: 65%;
+    color: grey;
+}
+
+#date {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#date>p {
+    font-family: Biennale bold;
+    font-size: 70%;
+    color: grey;
+}
+
+#time_flight {
+    text-align: center;
 }
 
 /*блок с коментариями*/
