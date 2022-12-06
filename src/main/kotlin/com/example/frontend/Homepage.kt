@@ -32,12 +32,17 @@ fun Route.getHomepage() {
             val phone = params["phone"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             firstName = translate(firstName)
             lastName = translate(lastName)
-            daoUser.apply {
-                runBlocking {
-                    addNewUser(firstName, lastName, email, password, phone)
+
+            if (daoUser.user(email) != null) {
+                daoUser.apply {
+                    runBlocking {
+                        addNewUser(firstName, lastName, email, password, phone)
+                    }
                 }
+                call.respond(FreeMarkerContent("homepage.ftl", mapOf("first_name" to firstName, "last_name" to lastName)))
             }
-            call.respond(FreeMarkerContent("homepage.ftl", mapOf("first_name" to firstName, "last_name" to lastName)))
+            else
+                call.respondText { "Пользователь уже существует!" }
         }
         post("/user") {
             val params = call.receiveParameters()

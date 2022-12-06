@@ -57,23 +57,6 @@
             </form>
         </div>
     </div>
-
-<#--    <div id="body_form_ticket">-->
-<#--        <div id="background_reg" onClick="openFormBuyTicket()"></div>-->
-<#--        <div id="block_form_ticket">-->
-<#--            <form action="/add_ticket_to_the_database" style="text-align: center;" method="post">-->
-<#--                <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 10px;">Заполните данные</p>-->
-<#--                <input type="text" name="last_name" id="" class="inp_reg" placeholder="Фамилия">-->
-<#--                <input type="text" name="first_name" id="" class="inp_reg" placeholder="Имя">-->
-<#--                <input type="text" name="middle_name" id="" class="inp_reg" placeholder="Отчество">-->
-<#--                <input type="text" name="passport_series" id="" class="inp_reg" placeholder="Серия паспорта">-->
-<#--                <input type="text" name="passport_id" id="" class="inp_reg" placeholder="Номер паспорта">-->
-<#--                <input type="text" name="email" id="" class="inp_reg" placeholder="E-mail">-->
-<#--                <input type="submit" name="" id="" class="inp_reg" value="Купить билет">-->
-<#--            </form>-->
-<#--        </div>-->
-<#--    </div>-->
-
     <div id="info_content">
         <div id="popular_flights" style="overflow: hidden;">
             <div id="main_block_navigation" style="width: 300%; height: 100%; position: absolute; right: -100%;">
@@ -145,9 +128,9 @@
                                                     <input type="" name="departure_date" value="${date_departure}" style="display: none">
                                                     <input type="" name="arrival_date" value="${date_departure}" style="display: none">
                                                     <input type="" name="distance" value="${flight.distance}" style="display: none">
-                                                    <input type="text" name="last_name" id="" class="inp_reg" placeholder="Фамилия" pattern="[A-Za-z]" style="text-transform:uppercase">
-                                                    <input type="text" name="first_name" id="" class="inp_reg" placeholder="Имя" pattern="[A-Za-z]" style="text-transform:uppercase">
-                                                    <input type="text" name="middle_name" id="" class="inp_reg" placeholder="Отчество" pattern="[A-Za-z]" style="text-transform:uppercase">
+                                                    <input type="text" name="last_name" id="" class="inp_reg" placeholder="Фамилия" style="text-transform:uppercase">
+                                                    <input type="text" name="first_name" id="" class="inp_reg" placeholder="Имя"  style="text-transform:uppercase">
+                                                    <input type="text" name="middle_name" id="" class="inp_reg" placeholder="Отчество"  style="text-transform:uppercase">
                                                     <input type="text" name="passport_series" id="" class="inp_reg" placeholder="Серия паспорта" minlength="4" maxlength="4">
                                                     <input type="text" name="passport_id" id="" class="inp_reg" placeholder="Номер паспорта" minlength="6" maxlength="6">
                                                     <input type="email" name="email" id="" class="inp_reg" placeholder="E-mail">
