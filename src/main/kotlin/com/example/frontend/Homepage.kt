@@ -1,21 +1,22 @@
 package com.example.frontend
 
-import com.example.database.dao.DAOUser
-import com.example.database.dao.DAOUserImpl
-import com.example.database.dataClass.User
-import com.example.database.dataClass.Users
+import com.example.database.dao.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 fun Route.getHomepage() {
     val daoUser: DAOUser = DAOUserImpl()
+    val daoAircraftBrand: DAOAircraftBrand = DAOAircraftBrandImpl()
+    val daoAirportDirectory: DAOAirportDirectory = DAOAirportDirectoryImpl()
+    val daoCarrier: DAOCarrier = DAOCarrierImpl()
+    val daoFlight: DAOFlight = DAOFlightImpl()
+    val daoLocationType: DAOLocationType = DAOLocationTypeImpl()
+    val daoPassengers: DAOPassengers = DAOPassengersImpl()
 
     route("") {
         get("") {
@@ -40,15 +41,20 @@ fun Route.getHomepage() {
         }
         post("/user") {
             val params = call.receiveParameters()
-            val login = params["email_login"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-            val password = params["password_login"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+            val login = params["email"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+            val password = params["password"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             val user = daoUser.user(login, password)
-
-            when(user?.role) {
-                "user" -> call.respondRedirect("/${user.firstName}/${user.lastName}")
-                "admin" -> call.respondRedirect("/user/admin_name")
-                "employee" -> call.respondRedirect("user/employee_name")
+            if (user == null)
+                println("Пользователя не существует!")
+            else {
+                println("Пользователь существует.")
+                when(user.role) {
+                    "user" -> call.respondRedirect("/${user.firstName}/${user.lastName}")
+                    "admin" -> call.respondRedirect("/user/admin_name")
+                    "employee" -> call.respondRedirect("/user/employee_name")
+                }
             }
+
         }
     }
 }

@@ -14,6 +14,7 @@
         <p>Бренд</p>
         <form action="/user/employee_name/add_brand" method="post">
             <input type="text" name="brand" id="" placeholder="Бренд">
+            <input type="text" name="coast_factor" placeholder="Коэфицент стоимости">
             <input type="submit" name="" id="">
         </form>
     </div>

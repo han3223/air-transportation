@@ -13,54 +13,66 @@
 </head>
 <body>
 <div id="block_information">
-    <div id="block_reg">
+    <div id="body_form_reg">
         <div id="background_reg" onClick="closeFormReg()"></div>
         <div id="block_form_reg">
-            <div id="div_form_reg">
-                <p style="font-family: Biennale,serif; font-size: 207%; float: inherit; margin-bottom: 10px;">Регистрация</p>
-                <form action="/" id="form_reg" method="post">
-                    <label>
-                        <input type="text" name="first_name" class="inp_reg" placeholder="Имя">
-                    </label>
-                    <label>
-                        <input type="text" name="last_name" class="inp_reg" placeholder="Фамилия">
-                    </label>
-                    <label>
-                        <input type="text" name="phone" class="inp_reg" placeholder="Телефон">
-                    </label>
-                    <label>
-                        <input type="email" name="email" class="inp_reg" placeholder="E-mail">
-                    </label>
-                    <label>
-                        <input type="password" name="password" class="inp_reg" placeholder="Пароль">
-                    </label>
-                    <label>
-                        <input type="password" class="inp_reg" placeholder="Повторите пароль">
-                    </label>
-                    <input type="submit" value="Зарегистироваться" class="inp_reg">
-                </form>
-            </div>
+            <form action="/" style="text-align: center;" method="post">
+                <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 10px;">Регистрация</p>
+                <label>
+                    <input type="text" name="first_name" class="inp_reg" placeholder="Имя">
+                </label>
+                <label>
+                    <input type="text" name="last_name" class="inp_reg" placeholder="Фамилия">
+                </label>
+                <label>
+                    <input type="text" name="phone" class="inp_reg" placeholder="Телефон">
+                </label>
+                <label>
+                    <input type="email" name="email" class="inp_reg" placeholder="E-mail">
+                </label>
+                <label>
+                    <input type="password" id="new_password" name="password" class="inp_reg" placeholder="Пароль" minlength="8">
+                </label>
+                <label>
+                    <input type="password" id="confirm_password" class="inp_reg" placeholder="Повторите пароль">
+                </label>
+                <input type="submit" value="Зарегистироваться" class="inp_reg">
+            </form>
         </div>
     </div>
-    <div id="block_auth">
-        <div id="background_reg" onClick="closeFormAuth()">
 
-        </div>
-        <div id="block_form_reg">
-            <div id="div_form_reg">
-                <p style="font-family: Biennale,serif; font-size: 207%; float: inherit; margin-bottom: 30px;">Вход</p>
-                <form action="/user" id="form_reg" method="post">
-                    <label>
-                        <input type="email" name="email_login" class="inp_reg" placeholder="E-mail">
-                    </label>
-                    <label>
-                        <input type="password" name="password_login" class="inp_reg" placeholder="Пароль">
-                    </label>
-                    <input type="submit" value="Войти" class="inp_reg">
-                </form>
-            </div>
+    <div id="body_form_auth">
+        <div id="background_reg" onClick="closeFormAuth()"></div>
+        <div id="block_form_auth">
+
+            <form action="/user" style="text-align: center;" method="post">
+                <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 10px;">Вход</p>
+                <label>
+                    <input type="email" name="email" class="inp_reg" placeholder="E-mail">
+                </label>
+                <label>
+                    <input type="password" name="password" class="inp_reg" placeholder="Пароль">
+                </label>
+                <input type="submit" value="Войти" class="inp_reg">
+            </form>
         </div>
     </div>
+
+<#--    <div id="body_form_ticket">-->
+<#--        <div id="background_reg" onClick="openFormBuyTicket()"></div>-->
+<#--        <div id="block_form_ticket">-->
+<#--            <form action="/add_ticket_to_the_database" style="text-align: center;" method="post">-->
+<#--                <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 10px;">Заполните данные</p>-->
+<#--                <input type="text" name="last_name" id="" class="inp_reg" placeholder="Фамилия">-->
+<#--                <input type="text" name="first_name" id="" class="inp_reg" placeholder="Имя">-->
+<#--                <input type="text" name="middle_name" id="" class="inp_reg" placeholder="Отчество">-->
+<#--                <input type="text" name="passport_series" id="" class="inp_reg" placeholder="Серия паспорта">-->
+<#--                <input type="text" name="passport_id" id="" class="inp_reg" placeholder="Номер паспорта">-->
+<#--                <input type="text" name="email" id="" class="inp_reg" placeholder="E-mail">-->
+<#--                <input type="submit" name="" id="" class="inp_reg" value="Купить билет">-->
+<#--            </form>-->
+<#--        </div>-->
+<#--    </div>-->
 
     <div id="info_content">
         <div id="popular_flights" style="overflow: hidden;">
@@ -95,56 +107,99 @@
 
         </div>
         <div id="special_offer">
-
+            <p>Частые вопросы</p>
+            <div><li>Вопрос 1</li></div>
+            <div><li>Вопрос 2</li></div>
+            <div><li>Вопрос 3</li></div>
+            <div><li>Вопрос 4</li></div>
+            <div><li>Вопрос 5</li></div>
         </div>
         <div id="question">
             <#if flights?has_content>
+                <#assign x = 1>
                 <#list flights as flight>
                     <#list locations as location>
-                        <div id="flight_div" class="${flight?index}${location?index}">
-                            <form action="" style="width: 30%; border-right: 1px grey solid; display: flex;">
-                                <div id="buy_ticket">
-                                    <div id="center_div_buy_ticket">
-                                        <div id="price"><p>${location.seat_price_per_kilometers * flight.distance}</p></div>
-                                        <div id="location_type"><p>${location.place}</p></div>
-                                        <input type="submit" id="input_buy_ticket" value="Купить билет">
-                                    </div>
-                                </div>
-                            </form>
-                            <div id="information_ticket">
-                                <div id="carrier" class="${flight?index}">
-                                    <div id="logo_carrier"></div>
-                                    <#list carriers as carrier>
-                                        <#if flight?index == carrier?index>
-                                            <div id="name_carrier" class="${carrier?index}"><p>${carrier.company_name}</p></div>
-                                        </#if>
-                                    </#list>
-                                </div>
-                                <div id="info_flight">
-                                    <div id="time_departure">
-                                        <div id="time"><p>${flight.departure_time}</p></div>
-                                        <div id="city"><p>${city_departure}</p></div>
-                                        <div id="date"><p>${date_departure}</p></div>
-                                    </div>
-                                    <div id="total_time">
-                                        <div id="time_flight"><p>В пути: ${time}</p></div>
-                                        <div id="image_flight"></div>
-                                    </div>
-                                    <div id="time_arrival">
-                                        <div id="time"><p>${flight.arrival_time}</p></div>
-                                        <div id="city"><p>${city_arrival}</p></div>
-                                        <div id="date"><p>${date_departure}</p></div>
-                                    </div>
-                                </div>
+                        <#list carriers as carrier>
+                            <#list brands as brand>
+                                <#if flight?index == carrier?index && flight?index == brand?index>
+                                    <div id="flight_div" class="${flight?index}${location?index}">
+                                        <form action="/add_ticket_to_the_database" style="width: 30%; border-right: 1px grey solid; display: flex; text-align: center" method="post">
+                                            <div id="buy_ticket">
+                                                <div id="center_div_buy_ticket">
+                                                    <div id="price" class="${brand?index}">
+                                                        <p>${(location.seat_price_per_kilometers * flight.distance * brand.cost_factor)?long?c} ₽</p>
+                                                    </div>
+                                                    <div id="location_type"><p>${location.place}</p></div>
+                                                    <button type="button" id="input_buy_ticket" onclick="openFormBuyTicket()">Купить билет</button>
+                                                </div>
+                                            </div>
+                                            <div id="body_form_ticket">
+                                                <div id="background_reg" onClick="closeFormBuyTicket()"></div>
+                                                <div id="block_form_ticket">
+                                                    <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 10px;">Заполните данные</p>
+                                                    <input type="" name="flight_number" value="${flight.flight_number}" style="display: none">
+                                                    <input type="" name="seat_category_code" value="${location.seat_category_code}" style="display: none">
+                                                    <input type="" name="brand_id" value="${brand.id}" style="display: none">
+                                                    <input type="" name="carrier_id" value="${carrier.id}" style="display: none">
+                                                    <input type="" name="ticket_price" value="${location.seat_price_per_kilometers * flight.distance * brand.cost_factor}" style="display: none">
+                                                    <input type="" name="departure_date" value="${date_departure}" style="display: none">
+                                                    <input type="" name="arrival_date" value="${date_departure}" style="display: none">
+                                                    <input type="" name="distance" value="${flight.distance}" style="display: none">
+                                                    <input type="text" name="last_name" id="" class="inp_reg" placeholder="Фамилия" pattern="[A-Za-z]" style="text-transform:uppercase">
+                                                    <input type="text" name="first_name" id="" class="inp_reg" placeholder="Имя" pattern="[A-Za-z]" style="text-transform:uppercase">
+                                                    <input type="text" name="middle_name" id="" class="inp_reg" placeholder="Отчество" pattern="[A-Za-z]" style="text-transform:uppercase">
+                                                    <input type="text" name="passport_series" id="" class="inp_reg" placeholder="Серия паспорта" minlength="4" maxlength="4">
+                                                    <input type="text" name="passport_id" id="" class="inp_reg" placeholder="Номер паспорта" minlength="6" maxlength="6">
+                                                    <input type="email" name="email" id="" class="inp_reg" placeholder="E-mail">
+                                                    <input type="submit" name="" id="" class="inp_reg" value="Купить билет">
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div id="information_ticket">
+                                            <div id="carrier" class="${flight?index}">
+                                                <div id="logo_carrier"></div>
+                                                <div id="name_carrier" class="${carrier?index}"><p>${carrier.company_name}</p></div>
+                                            </div>
+                                            <div id="info_flight">
+                                                <div id="time_departure">
+                                                    <div id="time"><p>${flight.departure_time}</p></div>
+                                                    <div id="city"><p>${city_departure}</p></div>
+                                                    <div id="date"><p>${date_departure}</p></div>
+                                                </div>
+                                                <div id="total_time">
+                                                    <div id="time_flight">
+                                                        <div id="image_flight">
+                                                            <p>В пути: ${time}</p>
+                                                        </div>
+                                                    </div>
 
-                            </div>
-                        </div>
+                                                </div>
+                                                <div id="time_arrival">
+                                                    <div id="time"><p>${flight.arrival_time}</p></div>
+                                                    <div id="city"><p>${city_arrival}</p></div>
+                                                    <div id="date"><p>${date_departure}</p></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </#if>
+                            </#list>
+                        </#list>
                     </#list>
-
-
                 </#list>
-            </#if>
+                <div id="flight_div" style="flex-wrap: wrap; justify-content: space-between">
+                    <div style="width: 15%; height: 40px;"></div>
+                    <div style="width: 60%; height: 60px">
+                        <button type="button" id="input_buy_ticket" style="margin-top: 10px;">Показать ещё</button>
+                    </div>
+                    <div style="width: 15%; height: 40px;"></div>
+                </div>
 
+            <#else>
+                <#assign x = 0>
+                <div id="your_flight" style="width: 90%; aspect-ratio: 1/1; margin-top: 10px; border: none; box-shadow: none"></div>
+            </#if>
         </div>
         <div id="reviews">
             <div id="your_reviews">
@@ -240,7 +295,10 @@
                 <input type="submit" id="search_ticket" value="Найти билет">
             </div>
         </form>
-        <div id="your_flight"></div>
+        <#if x == 0>
+        <#else>
+            <div id="your_flight"></div>
+        </#if>
     </div>
 </div>
 

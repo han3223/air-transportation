@@ -14,7 +14,7 @@
 
     <div id="main_div">
         <form action="/user/admin_name" method="post">
-            <input type="email" name="email" id="">
+            <input type="email" name="email" id="" placeholder="Email">
             <select name="select_role">
                 <option>Администратор</option>
                 <option>Сотрудник</option>
@@ -22,6 +22,28 @@
             </select>
             <input type="submit" name="" id="">
         </form>
+    </div>
+    <div id="list_user">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+            </tr>
+            <#list users as user>
+                <tr>
+                    <th>${user.id}</th>
+                    <th>${user.firstName}</th>
+                    <th>${user.lastName}</th>
+                    <th>${user.email}</th>
+                    <th>${user.phone}</th>
+                    <th>${user.role}</th>
+                </tr>
+            </#list>
+        </table>
     </div>
 </body>
 </html>

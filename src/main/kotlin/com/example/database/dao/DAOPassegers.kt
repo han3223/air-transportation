@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 interface DAOPassengers {
     suspend fun allPassengers(): List<Passenger>
-    suspend fun passengers(id_passenger: Int): Passenger?
+    suspend fun passenger(passport_series: Int, passport_id: Int): Passenger?
     suspend fun addNewPassengers(surname: String, name: String, passport_series: Int, passport_id: Int): Passenger?
     suspend fun deletePassengers(id_passenger: Int): Boolean
 }
@@ -27,9 +27,9 @@ class DAOPassengersImpl : DAOPassengers {
         Passengers.selectAll().map(::resultRowToPassenger)
     }
 
-    override suspend fun passengers(id_passenger: Int): Passenger? = dbQuery {
+    override suspend fun passenger(passport_series: Int, passport_id: Int): Passenger? = dbQuery {
         Passengers
-            .select { Passengers.id_passenger eq id_passenger }
+            .select { (Passengers.passport_series eq passport_series) and (Passengers.passport_id eq passport_id) }
             .map(::resultRowToPassenger)
             .singleOrNull()
     }

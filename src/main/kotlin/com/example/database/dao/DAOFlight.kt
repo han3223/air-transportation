@@ -15,7 +15,8 @@ interface DAOFlight {
                              departure_time: String,
                              arrival_time: String,
                              distance: Int,
-                             carrier_id: Int): Flight?
+                             carrier_id: Int,
+                             brand_id: Int): Flight?
     suspend fun deleteFlight(flight_number: Int): Boolean
     suspend fun flightNum(flight_number: Int): List<Flight>
 }
@@ -28,7 +29,8 @@ class DAOFlightImpl : DAOFlight {
         departure_time = row[Flights.departure_time],
         arrival_time = row[Flights.arrival_time],
         carrier_id = row[Flights.carrier_id],
-        distance = row[Flights.distance]
+        distance = row[Flights.distance],
+        brand_id = row[Flights.brand_id]
     )
 
     override suspend fun allFlight(): List<Flight> = dbQuery {
@@ -51,7 +53,8 @@ class DAOFlightImpl : DAOFlight {
         departure_time: String,
         arrival_time: String,
         distance: Int,
-        carrier_id: Int
+        carrier_id: Int,
+        brand_id: Int
     ): Flight? = dbQuery {
         val insertStatement = Flights.insert {
             it[Flights.point_of_departure] = point_of_departure
@@ -60,6 +63,7 @@ class DAOFlightImpl : DAOFlight {
             it[Flights.arrival_time] = arrival_time
             it[Flights.distance] = distance
             it[Flights.carrier_id] = carrier_id
+            it[Flights.brand_id] = brand_id
         }
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToFlight)
     }

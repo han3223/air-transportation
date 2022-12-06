@@ -30,6 +30,11 @@
             <input type="time" name="Departure_time" id="">
             <input type="time" name="Arrival_time" id="">
             <input type="text" name="Distance">
+            <select name="Brand_name" id="">
+                <#list brands as brand>
+                    <option value="${brand?index}"><h2>${brand}</h2></option>
+                </#list>
+            </select>
             <input type="submit" name="" id="">
         </form>
     </div>

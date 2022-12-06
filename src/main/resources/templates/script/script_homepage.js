@@ -11,20 +11,48 @@ function closeProfBlock() {
 
 }
 function openFormReg() {
-    const formReg = document.querySelector('#block_reg');
+    const formReg = document.querySelector('#body_form_reg');
+    const formAuth = document.querySelector('#body_form_auth');
+    const formTicket = document.querySelector('#body_form_ticket');
+    if (formReg.classList == 'open' || formAuth.classList == 'open') {
+        formTicket.classList = ''
+        formAuth.classList = ''
+    }
     formReg.classList.add('open');
 }
 function closeFormReg() {
-    const formReg = document.querySelector('#block_reg');
+    const formReg = document.querySelector('#body_form_reg');
     formReg.classList = '';
 }
 function closeFormAuth() {
-    const formAuth = document.querySelector('#block_auth');
+    const formAuth = document.querySelector('#body_form_auth');
     formAuth.classList = '';
 }
 function openFormAuth() {
-    const formAuth = document.querySelector('#block_auth');
+    const formReg = document.querySelector('#body_form_reg');
+    const formAuth = document.querySelector('#body_form_auth');
+    const formTicket = document.querySelector('#body_form_ticket');
+    if (formReg.classList == 'open' || formAuth.classList == 'open') {
+        formReg.classList = ''
+        formTicket.classList = ''
+    }
     formAuth.classList.add('open');
+}
+
+function openFormBuyTicket() {
+    const formReg = document.querySelector('#body_form_reg');
+    const formAuth = document.querySelector('#body_form_auth');
+    const formTicket = document.querySelector('#body_form_ticket');
+    if (formReg.classList == 'open' || formAuth.classList == 'open') {
+        formReg.classList = ''
+        formAuth.classList = ''
+    }
+    formTicket.classList.add('open');
+}
+
+function closeFormBuyTicket() {
+    const formTicket = document.querySelector('#body_form_ticket');
+    formTicket.classList = '';
 }
 
 
@@ -75,3 +103,16 @@ function lastFlight() {
 
 
 var next = setInterval(nextFligth, 7000);
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,7 +1,6 @@
 package com.example.frontend
 
 import com.example.database.dao.*
-import com.example.database.dataClass.AirportDirectory
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
@@ -9,6 +8,8 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.runBlocking
+import java.io.File
+import java.util.*
 
 fun Route.getHomepageEmployee() {
     val daoAircraftBrand: DAOAircraftBrand = DAOAircraftBrandImpl()
@@ -28,7 +29,7 @@ fun Route.getHomepageEmployee() {
                 call.respondRedirect("/user/employee_name/add_flight")
             }
             get("/add_flight") {
-                call.respond(FreeMarkerContent("flight.ftl", mapOf("data" to getAirport(), "carrier" to getCarrier())))
+                call.respond(FreeMarkerContent("flight.ftl", mapOf("data" to getAirport(), "carrier" to getCarrier(), "brands" to getBrand())))
             }
             post("/add_new_flight") {
                 val params = call.receiveParameters()
@@ -38,14 +39,17 @@ fun Route.getHomepageEmployee() {
                 val arrivalTime = params["Arrival_time"] ?: return@post call.respond(HttpStatusCode.BadRequest)
                 val distance = params["Distance"] ?: return@post call.respond(HttpStatusCode.BadRequest)
                 val carrier = params["Carrier_name"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+                val brand = params["Brand_name"] ?: return@post call.respond(HttpStatusCode.BadRequest)
 
                 daoFlight.apply {
                     runBlocking {
                         addNewFlight(pointOfDeparture.toInt()+1,
                             pointOfArrival.toInt() + 1,
-                            departureTime, arrivalTime,
+                            departureTime,
+                            arrivalTime,
                             distance.toInt(),
-                            carrier.toInt() + 1)
+                            carrier.toInt() + 1,
+                            brand.toInt() + 1)
                     }
                 }
                 call.respondRedirect("/user/employee_name/add_flight")
@@ -53,10 +57,11 @@ fun Route.getHomepageEmployee() {
             post("/add_brand") {
                 val params = call.receiveParameters()
                 val brand = params["brand"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+                val coastFactor = params["coast_factor"] ?: return@post call.respond(HttpStatusCode.BadRequest)
 
                 daoAircraftBrand.apply {
                     runBlocking {
-                        daoAircraftBrand.addNewAircraftBrand(brand)
+                        daoAircraftBrand.addNewAircraftBrand(brand, coastFactor.toDouble())
                     }
                 }
                 call.respondRedirect("/user/employee_name")
@@ -118,6 +123,16 @@ suspend fun getCarrier(): MutableList<String> {
     val buff = mutableListOf<String>()
     for (i in 0..listAirport.lastIndex) {
         buff.add(listAirport[i].company_name)
+    }
+    return buff
+}
+
+suspend fun getBrand(): MutableList<String> {
+    val daoAircraftBrand: DAOAircraftBrand = DAOAircraftBrandImpl()
+    val listBrand = daoAircraftBrand.allAircraftBrand()
+    val buff = mutableListOf<String>()
+    for (i in 0..listBrand.lastIndex) {
+        buff.add(listBrand[i].brand)
     }
     return buff
 }

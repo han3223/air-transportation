@@ -16,12 +16,18 @@ fun Route.getHomepageAdmin() {
 
     route("/user") {
         get("/admin_name") {
-            call.respond(FreeMarkerContent("admin_page.ftl", null))
+            val allUser = daoUser.allUser()
+            call.respond(FreeMarkerContent("admin_page.ftl", mapOf(
+                "users" to allUser, "user" to allUser
+            ), ""))
         }
         post("/admin_name") {
             val params = call.receiveParameters()
             val email = params["email"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             var role = params["select_role"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+
+            val allUser = daoUser.allUser()
+
             when(role) {
                 "Обычный пользователь" -> role = "user"
                 "Сотрудник" -> role = "employee"
@@ -29,8 +35,9 @@ fun Route.getHomepageAdmin() {
             }
 
             daoUser.updateRole(email, role)
-            call.respond(FreeMarkerContent("admin_page.ftl", null))
-
+            call.respond(FreeMarkerContent("admin_page.ftl", mapOf(
+                "users" to allUser, "user" to allUser
+            ), ""))
         }
     }
 }

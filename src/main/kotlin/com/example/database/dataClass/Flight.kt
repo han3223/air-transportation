@@ -12,7 +12,8 @@ data class Flight(
     val departure_time: String,
     val arrival_time: String,
     val distance: Int,
-    val carrier_id: Int
+    val carrier_id: Int,
+    val brand_id: Int
 
 )
 
@@ -23,7 +24,8 @@ object Flights : Table() {
     val departure_time: Column<String> = varchar("Departure_time", 10)
     val arrival_time: Column<String> = varchar("Arrival_time", 10)
     val distance: Column<Int> = integer("Distance")
-    val carrier_id: Column<Int> = integer("Carrier_name").references(Carriers.id)
+    val carrier_id: Column<Int> = integer("Carrier_id").references(Carriers.id)
+    val brand_id: Column<Int> = integer("Brand_id").references(AircraftBrands.id)
 
     override val primaryKey = PrimaryKey(flight_number)
 }
