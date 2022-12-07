@@ -101,77 +101,78 @@
             <#if flights?has_content>
                 <#assign x = 1>
                 <#list flights as flight>
-                    <#list locations as location>
-                        <#list carriers as carrier>
-                            <#list brands as brand>
-                                <#if flight?index == carrier?index && flight?index == brand?index>
-                                    <div id="flight_div" class="${flight?index}${location?index}">
-                                        <form action="/add_ticket_to_the_database" style="width: 30%; border-right: 1px grey solid; display: flex; text-align: center" method="post">
-                                            <div id="buy_ticket">
-                                                <div id="center_div_buy_ticket">
-                                                    <div id="price" class="${brand?index}">
-                                                        <p>${(location.seat_price_per_kilometers * flight.distance * brand.cost_factor)?long?c} ₽</p>
-                                                    </div>
-                                                    <div id="location_type"><p>${location.place}</p></div>
-                                                    <button type="button" id="input_buy_ticket" onclick="openFormBuyTicket()">Купить билет</button>
-                                                </div>
-                                            </div>
-                                            <div id="body_form_ticket">
-                                                <div id="background_reg" onClick="closeFormBuyTicket()"></div>
-                                                <div id="block_form_ticket">
-                                                    <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 10px;">Заполните данные</p>
-                                                    <input type="" name="flight_number" value="${flight.flight_number}" style="display: none">
-                                                    <input type="" name="seat_category_code" value="${location.seat_category_code}" style="display: none">
-                                                    <input type="" name="brand_id" value="${brand.id}" style="display: none">
-                                                    <input type="" name="carrier_id" value="${carrier.id}" style="display: none">
-                                                    <input type="" name="ticket_price" value="${location.seat_price_per_kilometers * flight.distance * brand.cost_factor}" style="display: none">
-                                                    <input type="" name="departure_date" value="${date_departure}" style="display: none">
-                                                    <input type="" name="arrival_date" value="${date_departure}" style="display: none">
-                                                    <input type="" name="distance" value="${flight.distance}" style="display: none">
-                                                    <input type="text" name="last_name" id="" class="inp_reg" placeholder="Фамилия" style="text-transform:uppercase">
-                                                    <input type="text" name="first_name" id="" class="inp_reg" placeholder="Имя"  style="text-transform:uppercase">
-                                                    <input type="text" name="middle_name" id="" class="inp_reg" placeholder="Отчество"  style="text-transform:uppercase">
-                                                    <input type="text" name="passport_series" id="" class="inp_reg" placeholder="Серия паспорта" minlength="4" maxlength="4">
-                                                    <input type="text" name="passport_id" id="" class="inp_reg" placeholder="Номер паспорта" minlength="6" maxlength="6">
-                                                    <input type="email" name="email" id="" class="inp_reg" placeholder="E-mail">
-                                                    <input type="submit" name="" id="" class="inp_reg" value="Купить билет">
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <div id="information_ticket">
-                                            <div id="carrier" class="${flight?index}">
-                                                <div id="logo_carrier"></div>
-                                                <div id="name_carrier" class="${carrier?index}"><p>${carrier.company_name}</p></div>
-                                            </div>
-                                            <div id="info_flight">
-                                                <div id="time_departure">
-                                                    <div id="time"><p>${flight.departure_time}</p></div>
-                                                    <div id="city"><p>${city_departure}</p></div>
-                                                    <div id="date"><p>${date_departure}</p></div>
-                                                </div>
-                                                <div id="total_time">
-                                                    <div id="time_flight">
-                                                        <div id="image_flight">
-                                                            <p>В пути: ${time}</p>
+                    <#if flight?index == 0 || flight?index == 1>
+                        <#list locations as location>
+                            <#list carriers as carrier>
+                                <#list brands as brand>
+                                    <#if flight?index == carrier?index && flight?index == brand?index>
+                                        <div id="flight_div" class="${flight?index}${location?index}">
+                                            <form action="/add_ticket_to_the_database" style="width: 30%; border-right: 1px grey solid; display: flex; text-align: center" method="post">
+                                                <div id="buy_ticket">
+                                                    <div id="center_div_buy_ticket">
+                                                        <div id="price" class="${brand?index}">
+                                                            <p>${(location.seat_price_per_kilometers * flight.distance * brand.cost_factor)?long?c} ₽</p>
                                                         </div>
+                                                        <div id="location_type"><p>${location.place}</p></div>
+                                                        <button type="button" id="input_buy_ticket" onclick="openFormBuyTicket()">Купить билет</button>
                                                     </div>
+                                                </div>
+                                                <div id="body_form_ticket">
+                                                    <div id="background_reg" onClick="closeFormBuyTicket()"></div>
+                                                    <div id="block_form_ticket">
+                                                        <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 10px;">Заполните данные</p>
+                                                        <input type="" name="flight_number" value="${flight.flight_number}" style="display: none">
+                                                        <input type="" name="seat_category_code" value="${location.seat_category_code}" style="display: none">
+                                                        <input type="" name="brand_id" value="${brand.id}" style="display: none">
+                                                        <input type="" name="carrier_id" value="${carrier.id}" style="display: none">
+                                                        <input type="" name="ticket_price" value="${location.seat_price_per_kilometers * flight.distance * brand.cost_factor}" style="display: none">
+                                                        <input type="" name="departure_date" value="${date_departure}" style="display: none">
+                                                        <input type="" name="arrival_date" value="${date_departure}" style="display: none">
+                                                        <input type="" name="distance" value="${flight.distance}" style="display: none">
+                                                        <input type="text" name="last_name" id="" class="inp_reg" placeholder="Фамилия" style="text-transform:uppercase">
+                                                        <input type="text" name="first_name" id="" class="inp_reg" placeholder="Имя"  style="text-transform:uppercase">
+                                                        <input type="text" name="middle_name" id="" class="inp_reg" placeholder="Отчество"  style="text-transform:uppercase">
+                                                        <input type="text" name="passport_series" id="" class="inp_reg" placeholder="Серия паспорта" minlength="4" maxlength="4">
+                                                        <input type="text" name="passport_id" id="" class="inp_reg" placeholder="Номер паспорта" minlength="6" maxlength="6">
+                                                        <input type="submit" name="" id="" class="inp_reg" value="Купить билет">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div id="information_ticket">
+                                                <div id="carrier" class="${flight?index}">
+                                                    <div id="logo_carrier"></div>
+                                                    <div id="name_carrier" class="${carrier?index}"><p>${carrier.company_name}</p></div>
+                                                </div>
+                                                <div id="info_flight">
+                                                    <div id="time_departure">
+                                                        <div id="time"><p>${flight.departure_time}</p></div>
+                                                        <div id="city"><p>${city_departure}</p></div>
+                                                        <div id="date"><p>${date_departure}</p></div>
+                                                    </div>
+                                                    <div id="total_time">
+                                                        <div id="time_flight">
+                                                            <div id="image_flight">
+                                                                <p>В пути: ${time}</p>
+                                                            </div>
+                                                        </div>
 
+                                                    </div>
+                                                    <div id="time_arrival">
+                                                        <div id="time"><p>${flight.arrival_time}</p></div>
+                                                        <div id="city"><p>${city_arrival}</p></div>
+                                                        <div id="date"><p>${date_departure}</p></div>
+                                                    </div>
                                                 </div>
-                                                <div id="time_arrival">
-                                                    <div id="time"><p>${flight.arrival_time}</p></div>
-                                                    <div id="city"><p>${city_arrival}</p></div>
-                                                    <div id="date"><p>${date_departure}</p></div>
-                                                </div>
+
                                             </div>
-
                                         </div>
-                                    </div>
-                                </#if>
+                                    </#if>
+                                </#list>
                             </#list>
                         </#list>
-                    </#list>
+                    </#if>
                 </#list>
-                <div id="flight_div" style="flex-wrap: wrap; justify-content: space-between">
+                <div id="flight_div" style="flex-wrap: wrap; justify-content: space-between; margin-bottom: 10px    " >
                     <div style="width: 15%; height: 40px;"></div>
                     <div style="width: 60%; height: 60px">
                         <button type="button" id="input_buy_ticket" style="margin-top: 10px;">Показать ещё</button>
@@ -181,7 +182,7 @@
 
             <#else>
                 <#assign x = 0>
-                <div id="your_flight" style="width: 90%; aspect-ratio: 1/1; margin-top: 10px; border: none; box-shadow: none"></div>
+                <div id="your_flight" style="width: 100%; margin-top: 0; border: none; box-shadow: none"></div>
             </#if>
         </div>
         <div id="reviews">

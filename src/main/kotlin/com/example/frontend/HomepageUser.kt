@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.example.frontend
 
 import com.example.database.dao.*
@@ -35,22 +37,33 @@ fun Route.logIn() {
                     val lastName = call.parameters.getOrFail<String>("last_name")
 
                     val params = call.receiveParameters()
-                    var departure = params["departure"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-                    var arrival = params["arrival"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+                    val departure = params["departure"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+                    val arrival = params["arrival"] ?: return@post call.respond(HttpStatusCode.BadRequest)
                     val date = params["date"] ?: return@post call.respond(HttpStatusCode.BadRequest)
 
-                    departure = checkAirport(departure)
-                    arrival = checkAirport(arrival)
+                    val departureModel = checkAirport(departure)
+                    val arrivalModel = checkAirport(arrival)
 
-                    if (departure == "" || arrival == "") {
+                    if (departureModel == null || arrivalModel == null) {
                         call.respond(FreeMarkerContent("homepage.ftl", null))
                     }
                     else {
                         val locationType = daoLocationType.allLocationType()
                         val list = getListFlights()
-                        val flightList = list[0]
-                        val carrierList = list[1]
-                        val brandList = list[2]
+                        val flightList = list[0] as MutableList<Flight>
+                        val carrierList = list[1] as MutableList<Carrier>
+                        val brandList = list[2] as MutableList<AircraftBrand>
+
+                        var i = 0
+                        while (i != flightList.lastIndex + 1) {
+                            if (flightList[i].point_of_departure != departureModel.code_airport && flightList[i].point_of_arrival != arrivalModel.code_airport) {
+                                flightList.removeAt(i)
+                                carrierList.removeAt(i)
+                                brandList.removeAt(i)
+                            }
+                            else
+                                i++
+                        }
 
                         if (flightList.isNotEmpty()) {
                             call.respond(FreeMarkerContent("homepage.ftl", mapOf(
@@ -78,22 +91,33 @@ fun Route.logIn() {
 
     post("/buy_flight") {
         val params = call.receiveParameters()
-        var departure = params["departure"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-        var arrival = params["arrival"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+        val departure = params["departure"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+        val arrival = params["arrival"] ?: return@post call.respond(HttpStatusCode.BadRequest)
         val date = params["date"] ?: return@post call.respond(HttpStatusCode.BadRequest)
 
-        departure = checkAirport(departure)
-        arrival = checkAirport(arrival)
+        val departureModel = checkAirport(departure)
+        val arrivalModel = checkAirport(arrival)
 
-        if (departure == "" || arrival == "") {
+        if (departureModel == null || arrivalModel == null) {
             call.respond(FreeMarkerContent("homepage.ftl", null))
         }
         else {
             val locationType = daoLocationType.allLocationType()
             val list = getListFlights()
-            val flightList = list[0]
-            val carrierList = list[1]
-            val brandList = list[2]
+            val flightList = list[0] as MutableList<Flight>
+            val carrierList = list[1] as MutableList<Carrier>
+            val brandList = list[2] as MutableList<AircraftBrand>
+
+            var i = 0
+            while (i != flightList.lastIndex + 1) {
+                if (flightList[i].point_of_departure != departureModel.code_airport && flightList[i].point_of_arrival != arrivalModel.code_airport) {
+                    flightList.removeAt(i)
+                    carrierList.removeAt(i)
+                    brandList.removeAt(i)
+                }
+                else
+                    i++
+            }
 
             if (flightList.isNotEmpty()) {
                 call.respond(FreeMarkerContent("homepage.ftl", mapOf(
@@ -122,7 +146,6 @@ fun Route.logIn() {
         val middleName = params["middle_name"] ?: return@post call.respond(HttpStatusCode.BadRequest)
         val passportSeries = params["passport_series"] ?: return@post call.respond(HttpStatusCode.BadRequest)
         val passportId = params["passport_id"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-        val email = params["email"] ?: return@post call.respond(HttpStatusCode.BadRequest)
 
         if (daoPassengers.passenger(passportSeries.toInt(), passportId.toInt()) == null) {
             daoPassengers.apply {
@@ -214,11 +237,12 @@ fun getListFlights(): Array<List<Any>> {
     arrayFlight += flightList
     arrayFlight += carrierList
     arrayFlight += brandList
-
+    arrayFlight += airportDirectoryDepartureList
+    arrayFlight += airportDirectoryArrivalList
     return arrayFlight
 }
 
-fun checkAirport(place: String): String {
+fun checkAirport(place: String): AirportDirectory? {
     Class.forName("org.postgresql.Driver")
     val database = DriverManager.getConnection("jdbc:postgresql://172.20.8.18:5432/kp0091_05", "st0091", "qwerty91")
 
@@ -230,10 +254,14 @@ fun checkAirport(place: String): String {
     val resultRequestCode = queryRequestCode.executeQuery()
     while (resultRequestCode.next()) {
         if (place == resultRequestCode.getString(3)) {
-            return resultRequestCode.getString(2)
+            return AirportDirectory(
+                resultRequestCode.getInt(1),
+                resultRequestCode.getString(2),
+                resultRequestCode.getString(3)
+            )
         }
     }
-    return ""
+    return null
 }
 
 fun Application.logInRouting() {

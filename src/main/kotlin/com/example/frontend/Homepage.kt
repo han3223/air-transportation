@@ -1,6 +1,7 @@
 package com.example.frontend
 
 import com.example.database.dao.*
+import com.example.database.dataClass.User
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
@@ -21,7 +22,6 @@ fun Route.getHomepage() {
     route("") {
         get("") {
             call.respond(FreeMarkerContent("homepage.ftl", null))
-
         }
         post("/") {
             val params = call.receiveParameters()
@@ -33,7 +33,8 @@ fun Route.getHomepage() {
             firstName = translate(firstName)
             lastName = translate(lastName)
 
-            if (daoUser.user(email) != null) {
+            if (daoUser.user(email) == null) {
+                println(daoUser.user(email))
                 daoUser.apply {
                     runBlocking {
                         addNewUser(firstName, lastName, email, password, phone)
@@ -69,7 +70,7 @@ fun Application.getHomepageRouting() {
 }
 
 fun translate(text: String): String {
-    var buffText: String = ""
+    var buffText = ""
     for (i in 0..text.lastIndex) {
         when(text[i]) {
             'А' -> buffText += "A"

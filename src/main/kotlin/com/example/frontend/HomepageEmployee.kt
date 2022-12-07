@@ -1,6 +1,8 @@
 package com.example.frontend
 
 import com.example.database.dao.*
+import com.example.database.dataClass.AirportDirectory
+import com.example.database.dataClass.Carrier
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
@@ -9,6 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.runBlocking
 import java.io.File
+import java.sql.DriverManager
 import java.util.*
 
 fun Route.getHomepageEmployee() {
@@ -107,32 +110,53 @@ fun Application.getHomepageEmployeeRouting() {
     routing { getHomepageEmployee() }
 }
 
-suspend fun getAirport(): MutableList<String> {
-    val daoAirportDirectory: DAOAirportDirectory = DAOAirportDirectoryImpl()
-    val listAirport = daoAirportDirectory.allAirportDirectory()
-    val buff = mutableListOf<String>()
-    for (i in 0..listAirport.lastIndex) {
-        buff.add(listAirport[i].airport_name)
+fun getAirport(): MutableList<String> {
+    Class.forName("org.postgresql.Driver")
+    val database = DriverManager.getConnection("jdbc:postgresql://172.20.8.18:5432/kp0091_05", "st0091", "qwerty91")
+
+    val airportList: MutableList<String> = mutableListOf()
+
+    val sqlRequestCodeAirportDirectory = """
+            select * from airportsdirectory
+        """.trimIndent()
+    val queryRequestCode = database.prepareStatement(sqlRequestCodeAirportDirectory)
+    val resultRequestCode = queryRequestCode.executeQuery()
+    while (resultRequestCode.next()) {
+        airportList.add(resultRequestCode.getString(3))
     }
-    return buff
+    return airportList
 }
 
-suspend fun getCarrier(): MutableList<String> {
-    val daoCarrier: DAOCarrier = DAOCarrierImpl()
-    val listAirport = daoCarrier.allCarriers()
-    val buff = mutableListOf<String>()
-    for (i in 0..listAirport.lastIndex) {
-        buff.add(listAirport[i].company_name)
+fun getCarrier(): MutableList<String> {
+    Class.forName("org.postgresql.Driver")
+    val database = DriverManager.getConnection("jdbc:postgresql://172.20.8.18:5432/kp0091_05", "st0091", "qwerty91")
+
+    val carrierList: MutableList<String> = mutableListOf()
+
+    val sqlRequestCodeAirportDirectory = """
+            select * from carriers
+        """.trimIndent()
+    val queryRequestCode = database.prepareStatement(sqlRequestCodeAirportDirectory)
+    val resultRequestCode = queryRequestCode.executeQuery()
+    while (resultRequestCode.next()) {
+        carrierList.add(resultRequestCode.getString(2))
     }
-    return buff
+    return carrierList
 }
 
-suspend fun getBrand(): MutableList<String> {
-    val daoAircraftBrand: DAOAircraftBrand = DAOAircraftBrandImpl()
-    val listBrand = daoAircraftBrand.allAircraftBrand()
-    val buff = mutableListOf<String>()
-    for (i in 0..listBrand.lastIndex) {
-        buff.add(listBrand[i].brand)
+fun getBrand(): MutableList<String> {
+    Class.forName("org.postgresql.Driver")
+    val database = DriverManager.getConnection("jdbc:postgresql://172.20.8.18:5432/kp0091_05", "st0091", "qwerty91")
+
+    val brandList: MutableList<String> = mutableListOf()
+
+    val sqlRequestCodeAirportDirectory = """
+            select * from aircraftbrands
+        """.trimIndent()
+    val queryRequestCode = database.prepareStatement(sqlRequestCodeAirportDirectory)
+    val resultRequestCode = queryRequestCode.executeQuery()
+    while (resultRequestCode.next()) {
+        brandList.add(resultRequestCode.getString(2))
     }
-    return buff
+    return brandList
 }
