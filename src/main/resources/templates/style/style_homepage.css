@@ -330,7 +330,7 @@ input:invalid, input:invalid:focus {
 #block_information {
     background-color: #587ca9;
     width: 74.9vw;
-    min-width: 1030px;
+    min-width: 1130px;
     float: left;
     position: inherit;
     display: grid;
@@ -496,22 +496,25 @@ input[type="radio"]:checked+.rad-design::before {
     border: 1px solid;
     box-shadow: 1px 1px 10px 0 black;
     margin-top: 70px;
-    display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    text-align: center;
     padding-top: 10px;
 }
 
-#special_offer>p, #special_offer>div {
+#special_offer>a {
     width: 80%;
     height: 40px;
     font-family: Biennale bold;
-    font-size: 150%;
+    margin-top: 15px;
 }
 
 li {
     width: 100%;
+}
+
+.div_question {
+    width: 90%;
+    float: left;
 }
 
 /*блок с вопросами*/
@@ -747,24 +750,24 @@ li {
 /*тема коментария*/
 
 #theme_reviews {
-    width: 80%;
+    width: calc(80% - 10px);
     float: left;
     margin: 12px 0 0 5%;
     height: 41px;
     border: none;
-    padding: 0;
     border-radius: 5px;
+    padding: 0 0 0 10px;
 }
 
 /*текстовое поле*/
 
 #text_reviews {
-    width: 100%;
+    width: calc(100% - 10px);
     height: 100px;
     border: none;
-    padding: 0;
     resize: none;
     border-radius: 5px;
+    padding: 0 0 0 10px;
 }
 
 /*все коментарии*/
@@ -786,9 +789,108 @@ li {
     margin-top: 100px;
 }
 
+.arrow {
+    width: 7px;
+    height: 7px;
+    border-top: 2px solid #064d82;
+    border-right: 2px solid #064d82;
+    margin-right: 15px;
+    float: right;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.arrow:hover {
+    animation-duration: 1.5s;
+    animation-fill-mode: both;
+    animation-name: hoverArrow;
+}
+
+.arrow-bottom {
+    transform: rotate(135deg);
+}
+
+#arrow_1 {
+    margin-top: 10px;
+    display: none;
+    height: 0;
+    animation-duration: 1.5s;
+    animation-fill-mode: both;
+    animation-name: fadeIn;
+}
+#arrow_2 {
+    margin-top: 10px;
+    display: none;
+    height: 0;
+    animation-duration: 1.5s;
+    animation-fill-mode: both;
+    animation-name: fadeIn;
+}
+#arrow_3 {
+    margin-top: 10px;
+    display: none;
+    height: 0;
+    animation-duration: 1.5s;
+    animation-fill-mode: both;
+    animation-name: fadeIn;
+}
+#arrow_4 {
+    margin-top: 10px;
+    display: none;
+    height: 0;
+    animation-duration: 1.5s;
+    animation-fill-mode: both;
+    animation-name: fadeIn;
+}
+#arrow_5 {
+    margin-top: 10px;
+    display: none;
+    height: 0;
+    animation-duration: 1.5s;
+    animation-fill-mode: both;
+    animation-name: fadeIn;
+}
+
+#arrow_1.open {
+    margin-top: 10px;
+    display: block;
+    height: auto;
+}
+#arrow_2.open {
+    margin-top: 10px;
+    display: block;
+    height: auto;
+}
+#arrow_3.open {
+    margin-top: 10px;
+    display: block;
+    height: auto;
+}
+#arrow_4.open {
+    margin-top: 10px;
+    display: block;
+    height: auto;
+}
+#arrow_5.open {
+    margin-top: 10px;
+    display: block;
+    height: auto;
+}
+
 /*блок с информацией (конец)*/
 
 /*функции*/
+
+@keyframes hoverArrow {
+    from {
+        border-top: 2px solid #064d82;
+        border-right: 2px solid #064d82;
+    }
+    to {
+        border-top: 2px solid black;
+        border-right: 2px solid black;
+    }
+}
 
 @keyframes fadeIn {
     from {

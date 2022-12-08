@@ -104,6 +104,43 @@ function lastFlight() {
 
 var next = setInterval(nextFligth, 7000);
 
+function openQuestion1() {
+
+    const arrow1 = document.querySelector("#arrow_1");
+    if (arrow1.classList == "")
+        arrow1.classList.add("open");
+    else
+        arrow1.classList = ""
+}
+function openQuestion2() {
+    const arrow2 = document.querySelector("#arrow_2");
+    if (arrow2.classList == "")
+        arrow2.classList.add("open");
+    else
+        arrow2.classList = ""
+}
+function openQuestion3() {
+    const arrow3 = document.querySelector("#arrow_3");
+    if (arrow3.classList == "")
+        arrow3.classList.add("open");
+    else
+        arrow3.classList = ""
+}
+function openQuestion4() {
+    const arrow4 = document.querySelector("#arrow_4");
+    if (arrow4.classList == "")
+        arrow4.classList.add("open");
+    else
+        arrow4.classList = ""
+}
+function openQuestion5() {
+    const arrow5 = document.querySelector("#arrow_5");
+    if (arrow5.classList == "")
+        arrow5.classList.add("open");
+    else
+        arrow5.classList = ""
+}
+
 
 
 
