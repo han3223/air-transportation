@@ -19,22 +19,22 @@
             <form action="/" style="text-align: center;" method="post">
                 <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 10px;">Регистрация</p>
                 <label>
-                    <input type="text" name="first_name" class="inp_reg" placeholder="Имя">
+                    <input type="text" name="first_name" class="inp_reg" placeholder="Имя" pattern="[a-zA-Z]+" oninvalid="setCustomValidity('Поле должно быть заполнено латинскими символами!')">
                 </label>
                 <label>
-                    <input type="text" name="last_name" class="inp_reg" placeholder="Фамилия">
+                    <input type="text" name="last_name" class="inp_reg" placeholder="Фамилия" pattern="[a-zA-Z]+" oninvalid="setCustomValidity('Поле должно быть заполнено латинскими символами!')">
                 </label>
                 <label>
-                    <input type="text" name="phone" class="inp_reg" placeholder="Телефон">
+                    <input type="tel" name="phone" class="inp_reg" placeholder="Телефон" pattern="^+[0-9]" minlength="12" maxlength="12" oninvalid="setCustomValidity('Телефон должен быть заполнен в международном формате!')">
                 </label>
                 <label>
                     <input type="email" name="email" class="inp_reg" placeholder="E-mail">
                 </label>
                 <label>
-                    <input type="password" id="new_password" name="password" class="inp_reg" placeholder="Пароль" minlength="8">
+                    <input type="password" id="new_password" name="password" class="inp_reg" placeholder="Пароль" onkeyup="checkPasswordMatch()" minlength="8" pattern="[A-Za-z0-9!@#$%^&*()_+=-]{8,16}" oninvalid="setCustomValidity('Пароль должен включать: Минимум восемь символов, по крайней мере, одна буква, одна цифра!')">
                 </label>
                 <label>
-                    <input type="password" id="confirm_password" class="inp_reg" placeholder="Повторите пароль">
+<#--                    <input type="password" id="confirm_password" class="inp_reg" placeholder="Повторите пароль" >-->
                 </label>
                 <input type="submit" value="Зарегистироваться" class="inp_reg">
             </form>
@@ -134,12 +134,12 @@
                 <#if flights?has_content>
                     <#assign x = 1>
                     <#list flights as flight>
-                        <#if flight?index == 0 || flight?index == 1>
-                            <#list locations as location><
+                        <#if 0 <= flight?index>
+                            <#list locations as location>
                                 <#list carriers as carrier>
                                     <#list brands as brand>
                                         <#if flight?index == carrier?index && flight?index == brand?index>
-                                            <div id="flight_div" class="${flight?index}${location?index}">
+                                            <div id="flight_div" class="flight" <#if 2 <= flight?index>style="display: none"</#if>>
                                                 <form action="/add_ticket_to_the_database" style="width: 30%; border-right: 1px grey solid; display: flex; text-align: center" method="post">
                                                     <div id="buy_ticket">
                                                         <div id="center_div_buy_ticket">
@@ -147,7 +147,7 @@
                                                                 <p>${(location.seat_price_per_kilometers * flight.distance * brand.cost_factor)?long?c} ₽</p>
                                                             </div>
                                                             <div id="location_type"><p>${location.place}</p></div>
-                                                            <button type="button" id="input_buy_ticket" onclick="openFormBuyTicket()">Купить билет</button>
+                                                            <input type="button" id="input_buy_ticket" onclick="openFormBuyTicket()" value="Купить билет"/>
                                                         </div>
                                                     </div>
                                                     <div id="body_form_ticket">
@@ -185,7 +185,7 @@
                                                         <div id="total_time">
                                                             <div id="time_flight">
                                                                 <div id="image_flight">
-                                                                    <p>В пути: ${time}</p>
+                                                                    <p>В пути: ${flight.time}</p>
                                                                 </div>
                                                             </div>
 
@@ -196,7 +196,6 @@
                                                             <div id="date"><p>${date_departure}</p></div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </#if>
@@ -204,15 +203,16 @@
                                 </#list>
                             </#list>
                         </#if>
+                        <#if flight?index == 2>
+                            <div id="flight_div" class="more_ticket" style="flex-wrap: wrap; justify-content: space-between; margin-bottom: 10px" >
+                                <div style="width: 15%; height: 40px;"></div>
+                                <div style="width: 60%; height: 60px">
+                                    <button type="button" id="input_buy_ticket" style="margin-top: 10px;" onclick="openFlight()">Показать ещё</button>
+                                </div>
+                                <div style="width: 15%; height: 40px;"></div>
+                            </div>
+                        </#if>
                     </#list>
-                    <div id="flight_div" style="flex-wrap: wrap; justify-content: space-between; margin-bottom: 10px    " >
-                        <div style="width: 15%; height: 40px;"></div>
-                        <div style="width: 60%; height: 60px">
-                            <button type="button" id="input_buy_ticket" style="margin-top: 10px;">Показать ещё</button>
-                        </div>
-                        <div style="width: 15%; height: 40px;"></div>
-                    </div>
-
                 <#else>
                     <style>
                         #question {
@@ -226,18 +226,42 @@
         </div>
         <div id="reviews">
             <div id="your_reviews">
-                <form action="" id="form_reviews">
+                <form <#if first_name?has_content && last_name?has_content> action="/${first_name}/${last_name}/add_review" <#else> action="/add_review"</#if> id="form_reviews" method="post">
                     <div id="body_reviews_ava">
                         <div id="reviews_ava"></div>
-                        <label for="theme_reviews"></label><input type="text" id="theme_reviews" placeholder="Тема комментария">
+                        <label for="theme_reviews"></label><input type="text" id="theme_reviews" name="theme" placeholder="Тема комментария">
                     </div>
                     <div id="body_form_reviews">
-                        <label for="text_reviews"></label><textarea id="text_reviews" placeholder="Текст комментария" style="pa"></textarea>
+                        <label for="text_reviews"></label><textarea id="text_reviews" name="text" placeholder="Текст комментария"></textarea>
                     </div>
+                    <#if first_name?has_content>
+                        <input type="text" value="${first_name}" style="display: none">
+                        <input type="text" value="${last_name}" style="display: none">
+                    </#if>
+                    <input type="submit" id="input_buy_ticket" value="Отправить коментарий" style="width: 80%">
                 </form>
             </div>
             <div id="all_reviews">
-
+                <#list reviews as review>
+                    <div style="margin-top: 23px; <#if 1 < review?index>display: none; margin-bottom: 10px</#if>" class="review">
+                        <div id="body_reviews_ava">
+                            <div id="reviews_ava" style="margin-right: 20px"></div>
+                            <div>
+                                <div style="display: inline-block; margin-top: 25px; height: 20px; width: 70%"><h4>${review.first_name}</h4></div>
+                                <div style="width: 70%"><h4>${review.last_name}</h4></div>
+                            </div>
+                            <div style="width: 100%; margin-top: 10px"><h3>${review.theme}</h3></div>
+                        </div>
+                        <div id="body_form_reviews" style="margin-top: 20px">
+                            <h4>${review.text}</h4>
+                        </div>
+                    </div>
+                    <#if review?index == 2>
+                        <div style="width: 80%; margin: 0 auto">
+                            <input type="button" id="input_buy_ticket" class="more_reviews" value="Показать еще" onclick="openReviews()" style="width: 100%;">
+                        </div>
+                    </#if>
+                </#list>
             </div>
         </div>
     </div>

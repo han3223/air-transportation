@@ -141,6 +141,28 @@ function openQuestion5() {
         arrow5.classList = ""
 }
 
+function openFlight() {
+    const div = document.querySelectorAll(".flight");
+    const button = document.querySelector(".more_ticket")
+    div.forEach(function(el) {
+        el.style.display = "flex";
+    });
+    button.style.display = "none";
+}
+
+function openReviews() {
+    const div = document.querySelectorAll(".review")
+    const button = document.querySelector(".more_reviews")
+    div.forEach(function(el) {
+        el.style.display = "block";
+    });
+    button.style.display = "none";
+}
+
+$(document).ready(function () {
+    $("#new_password, #confirm_password").keyup(checkPasswordMatch);
+});
+
 
 
 

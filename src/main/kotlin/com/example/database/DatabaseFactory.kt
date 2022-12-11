@@ -22,6 +22,7 @@ object DatabaseFactory {
             SchemaUtils.create(Passengers)
             SchemaUtils.create(Tickets)
             SchemaUtils.create(Users)
+            SchemaUtils.create(Reviews)
         }
     }
 

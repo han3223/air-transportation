@@ -11,6 +11,8 @@ interface DAOAircraftBrand {
     suspend fun aircraftBrand(id: Int): AircraftBrand?
     suspend fun addNewAircraftBrand(name: String, costFactor: Double): AircraftBrand?
     suspend fun deleteAircraftBrand(id: Int): Boolean
+    suspend fun aircraftBrand(brand: String): AircraftBrand?
+    suspend fun updateBrand(brand: String, cost: Double): Boolean
 }
 
 class DAOAircraftBrandImpl : DAOAircraftBrand {
@@ -31,6 +33,13 @@ class DAOAircraftBrandImpl : DAOAircraftBrand {
             .singleOrNull()
     }
 
+    override suspend fun aircraftBrand(brand: String): AircraftBrand? = dbQuery {
+        AircraftBrands
+            .select {AircraftBrands.brand eq brand}
+            .map(::resultRowToAircraftBrand)
+            .singleOrNull()
+    }
+
     override suspend fun addNewAircraftBrand(name: String, costFactor: Double): AircraftBrand? = dbQuery {
         val insertStatement = AircraftBrands.insert {
             it[brand] = name
@@ -38,6 +47,12 @@ class DAOAircraftBrandImpl : DAOAircraftBrand {
 
         }
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToAircraftBrand)
+    }
+
+    override suspend fun updateBrand(brand: String, cost: Double): Boolean = dbQuery {
+        AircraftBrands.update({ AircraftBrands.brand eq brand}) {
+            it[cost_factor] = cost
+        } > 0
     }
 
     override suspend fun deleteAircraftBrand(id: Int): Boolean = dbQuery {

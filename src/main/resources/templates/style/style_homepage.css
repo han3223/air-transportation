@@ -222,6 +222,7 @@ input:invalid, input:invalid:focus {
 /*аватарка профиля*/
 
 #ava {
+    cursor: pointer;
     height: 40px;
     aspect-ratio: 1/1;
     float: right;
@@ -303,7 +304,8 @@ input:invalid, input:invalid:focus {
     font-size: 160%;
 }
 
-#search_ticket:hover {
+#search_ticket:hover, #input_buy_ticket:hover {
+    cursor: pointer;
     background-color: #d17126;
 }
 
@@ -540,7 +542,7 @@ li {
     width: 94%;
     border-radius: 10px;
     background-color: white;
-    margin: 10px auto 0;
+    margin: 10px auto 10px;
     display: flex;
 }
 
@@ -619,7 +621,7 @@ li {
 }
 
 #name_carrier {
-    width: 100px;
+    width: 340px;
     height: 40px;
     float: left;
 }
@@ -711,13 +713,13 @@ li {
     width: 50%;
     height: 100%;
     float: left;
-    border-right: 1px solid;
 }
 
 /*форма коментария*/
 
 #form_reviews {
     margin: 23px auto;
+    text-align: center;
 }
 
 /*блок с аватаркой*/
@@ -773,8 +775,9 @@ li {
 /*все коментарии*/
 
 #all_reviews {
-    width: 50%;
+    width: calc(50% - 1px);
     float: left;
+    border-left: 1px solid;
 }
 
 /*футер*/

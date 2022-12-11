@@ -1,7 +1,7 @@
 package com.example.database.dao
+import com.example.database.DatabaseFactory.dbQuery
 import com.example.database.dataClass.Carrier
 import com.example.database.dataClass.Carriers
-import com.example.database.DatabaseFactory.dbQuery
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
@@ -12,6 +12,7 @@ interface DAOCarrier {
     suspend fun editCarrier(id: Int, name: String): Boolean
     suspend fun deleteCarrier(id: Int): Boolean
     suspend fun getCarrierList(id: Int): List<Carrier>
+    suspend fun carrier(carrier: String): Carrier?
 }
 
 class DAOCarrierImpl : DAOCarrier {
@@ -27,6 +28,13 @@ class DAOCarrierImpl : DAOCarrier {
     override suspend fun carrier(id: Int): Carrier? = dbQuery {
         Carriers
             .select { Carriers.id eq id}
+            .map(::resultRowToCarrier)
+            .singleOrNull()
+    }
+
+    override suspend fun carrier(carrier: String): Carrier? = dbQuery {
+        Carriers
+            .select { Carriers.company_name eq carrier}
             .map(::resultRowToCarrier)
             .singleOrNull()
     }

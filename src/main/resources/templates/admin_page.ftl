@@ -11,15 +11,20 @@
     <title>Document</title>
 </head>
 <body>
-
     <div id="main_div">
         <form action="/user/admin_name" method="post">
-            <input type="email" name="email" id="" placeholder="Email">
-            <select name="select_role">
-                <option>Администратор</option>
-                <option>Сотрудник</option>
-                <option>Обычный пользователь</option>
-            </select>
+            <input type="text" style="display: none" value="${status}" name="status">
+            <p>${status}</p>
+            <label for=""></label><input type="email" name="email" id="" placeholder="Email">
+            <label>
+                <select name="select_role">
+                    <#if admin?has_content>
+                        <option>${admin}</option>
+                    </#if>
+                    <option>Сотрудник</option>
+                    <option>Обычный пользователь</option>
+                </select>
+            </label>
             <input type="submit" name="" id="">
         </form>
     </div>

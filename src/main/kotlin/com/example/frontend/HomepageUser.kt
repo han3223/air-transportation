@@ -23,16 +23,19 @@ fun Route.logIn() {
     val daoLocationType: DAOLocationType = DAOLocationTypeImpl()
     val daoPassengers: DAOPassengers = DAOPassengersImpl()
     val daoTicket: DAOTicket = DAOTicketImpl()
+    val daoReview: DAOReview = DAOReviewImpl()
 
         route("/{first_name}") {
             route("/{last_name}") {
                 get("") {
                     val firstName = call.parameters.getOrFail<String>("first_name")
                     val lastName = call.parameters.getOrFail<String>("last_name")
-                    call.respond(FreeMarkerContent("homepage.ftl", mapOf("first_name" to firstName, "last_name" to lastName)))
+                    val allReviews = daoReview.allReview()
+                    call.respond(FreeMarkerContent("homepage.ftl", mapOf("first_name" to firstName, "last_name" to lastName, "reviews" to allReviews, "review" to allReviews)))
                 }
 
                 post("/buy_flight") {
+                    val allReviews = daoReview.allReview()
                     val firstName = call.parameters.getOrFail<String>("first_name")
                     val lastName = call.parameters.getOrFail<String>("last_name")
 
@@ -74,22 +77,49 @@ fun Route.logIn() {
                                 "city_departure" to departure,
                                 "city_arrival" to arrival,
                                 "date_departure" to date,
-                                "time" to "5:34",
                                 "locations" to locationType,
                                 "location" to locationType,
                                 "carriers" to carrierList,
                                 "carrier" to carrierList,
                                 "brands" to brandList,
-                                "brand" to brandList), "")
+                                "brand" to brandList,
+                                "reviews" to allReviews,
+                                "review" to allReviews), "")
                             )
                         }
                     }
                 }
+
+                post("/add_review") {
+                    val firstName = call.parameters.getOrFail<String>("first_name")
+                    val lastName = call.parameters.getOrFail<String>("last_name")
+
+                    val params = call.receiveParameters()
+                    val theme = params["theme"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+                    val text = params["text"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+
+                    daoReview.addNewReview(firstName, lastName, theme, text)
+
+                    call.respondRedirect("/${firstName}/${lastName}")
+                }
             }
         }
 
+    post("/add_review") {
+        val params = call.receiveParameters()
+        val theme = params["theme"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+        val text = params["text"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+
+        daoReview.apply {
+            runBlocking {
+                addNewReview("Неизвестный", "Пользователь", theme, text)
+            }
+        }
+        call.respondRedirect("/")
+    }
 
     post("/buy_flight") {
+        val allReviews = daoReview.allReview()
         val params = call.receiveParameters()
         val departure = params["departure"] ?: return@post call.respond(HttpStatusCode.BadRequest)
         val arrival = params["arrival"] ?: return@post call.respond(HttpStatusCode.BadRequest)
@@ -119,6 +149,8 @@ fun Route.logIn() {
                     i++
             }
 
+            pars(flightList[0].departure_time, flightList[0].arrival_time)
+
             if (flightList.isNotEmpty()) {
                 call.respond(FreeMarkerContent("homepage.ftl", mapOf(
                     "flights" to flightList,
@@ -126,13 +158,14 @@ fun Route.logIn() {
                     "city_departure" to departure,
                     "city_arrival" to arrival,
                     "date_departure" to date,
-                    "time" to "5:34",
                     "locations" to locationType,
                     "location" to locationType,
                     "carriers" to carrierList,
                     "carrier" to carrierList,
                     "brands" to brandList,
-                    "brand" to brandList), "")
+                    "brand" to brandList,
+                    "reviews" to allReviews,
+                    "review" to allReviews), "")
                 )
             }
         }
@@ -177,6 +210,8 @@ fun Route.logIn() {
                 daoTicket.addNewTicket(flightNumber.toInt(), seatCode.toInt(), passenger!!, brandId.toInt(), carrierId.toInt(), ticketPrice.toFloat(), dateDeparture, dateArrival, distance.toInt())
             }
         }
+
+        call.respondRedirect("/")
     }
 }
 
@@ -208,21 +243,22 @@ fun getListFlights(): Array<List<Any>> {
         val arrivalId = resultRequestAll.getInt(3)
         val departureTime = resultRequestAll.getString(4)
         val arrivalTime = resultRequestAll.getString(5)
-        val distance = resultRequestAll.getInt(6)
-        val carrierId = resultRequestAll.getInt(7)
-        val brandId = resultRequestAll.getInt(8)
-        val carrierIdCarrier = resultRequestAll.getInt(9)
-        val companyName = resultRequestAll.getString(10)
-        val brandIdBrand = resultRequestAll.getInt(11)
-        val brandName = resultRequestAll.getString(12)
-        val costFactor = resultRequestAll.getDouble(13)
-        val codeAirportDeparture = resultRequestAll.getInt(14)
-        val cityDeparture = resultRequestAll.getString(15)
-        val airportDeparture = resultRequestAll.getString(16)
-        val codeAirportArrival = resultRequestAll.getInt(17)
-        val cityArrival = resultRequestAll.getString(18)
-        val airportArrival = resultRequestAll.getString(19)
-        val flight = Flight(number, departureId, arrivalId, departureTime, arrivalTime, distance, carrierId, brandId)
+        val time = resultRequestAll.getString(6)
+        val distance = resultRequestAll.getInt(7)
+        val carrierId = resultRequestAll.getInt(8)
+        val brandId = resultRequestAll.getInt(9)
+        val carrierIdCarrier = resultRequestAll.getInt(10)
+        val companyName = resultRequestAll.getString(11)
+        val brandIdBrand = resultRequestAll.getInt(12)
+        val brandName = resultRequestAll.getString(13)
+        val costFactor = resultRequestAll.getDouble(14)
+        val codeAirportDeparture = resultRequestAll.getInt(15)
+        val cityDeparture = resultRequestAll.getString(16)
+        val airportDeparture = resultRequestAll.getString(17)
+        val codeAirportArrival = resultRequestAll.getInt(18)
+        val cityArrival = resultRequestAll.getString(19)
+        val airportArrival = resultRequestAll.getString(20)
+        val flight = Flight(number, departureId, arrivalId, departureTime, arrivalTime, time, distance, carrierId, brandId)
         val carrier = Carrier(carrierIdCarrier, companyName)
         val brand = AircraftBrand(brandIdBrand, brandName, costFactor)
         val airportDirectoryDeparture = AirportDirectory(codeAirportDeparture, cityDeparture, airportDeparture)

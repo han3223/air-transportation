@@ -1,7 +1,6 @@
 package com.example.frontend
 
 import com.example.database.dao.*
-import com.example.database.dataClass.User
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
@@ -18,10 +17,12 @@ fun Route.getHomepage() {
     val daoFlight: DAOFlight = DAOFlightImpl()
     val daoLocationType: DAOLocationType = DAOLocationTypeImpl()
     val daoPassengers: DAOPassengers = DAOPassengersImpl()
+    val daoReview: DAOReview = DAOReviewImpl()
 
     route("") {
         get("") {
-            call.respond(FreeMarkerContent("homepage.ftl", null))
+            val allReviews = daoReview.allReview()
+            call.respond(FreeMarkerContent("homepage.ftl", mapOf("reviews" to allReviews, "review" to allReviews), ""))
         }
         post("/") {
             val params = call.receiveParameters()
@@ -56,11 +57,11 @@ fun Route.getHomepage() {
                 println("Пользователь существует.")
                 when(user.role) {
                     "user" -> call.respondRedirect("/${user.firstName}/${user.lastName}")
-                    "admin" -> call.respondRedirect("/user/admin_name")
+                    "admin" -> call.respondRedirect("/user/admin")
+                    "main admin" -> call.respondRedirect("/user/main_admin")
                     "employee" -> call.respondRedirect("/user/employee_name")
                 }
             }
-
         }
     }
 }

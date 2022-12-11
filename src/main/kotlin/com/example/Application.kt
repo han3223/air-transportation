@@ -1,19 +1,17 @@
 package com.example
 
 import com.example.database.DatabaseFactory
-import com.example.database.dao.*
 import com.example.plugins.configureRouting
 import com.example.plugins.configureTemplating
 import com.fasterxml.jackson.databind.SerializationFeature
+import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
-import java.io.File
-import java.util.*
+import io.ktor.server.plugins.cors.routing.*
+
 
 fun Application.myapp() {
     configureRouting()
@@ -24,6 +22,15 @@ fun Application.myapp() {
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
         }
+    }
+    install(CORS) {
+        allowMethod(HttpMethod.Options)
+        allowMethod(HttpMethod.Put)
+        allowMethod(HttpMethod.Delete)
+        allowMethod(HttpMethod.Patch)
+        allowHeader(HttpHeaders.Authorization)
+        allowHeader("MyCustomHeader")
+        anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
     }
 }
 

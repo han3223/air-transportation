@@ -34,9 +34,11 @@ input {
 
 #main_div {
 	width: 80%;
-	height: 100vh;
+	height: 100%;
 	background-color: #064d82;
 }
 
-
+input:invalid {
+	border: 1px solid red;
+}
 

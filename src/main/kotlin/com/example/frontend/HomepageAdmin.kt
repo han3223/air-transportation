@@ -3,6 +3,7 @@ package com.example.frontend
 import com.example.database.dao.DAOUser
 import com.example.database.dao.DAOUserImpl
 import io.ktor.http.*
+import io.ktor.http.cio.HttpMessage
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
@@ -15,29 +16,39 @@ fun Route.getHomepageAdmin() {
     val daoUser: DAOUser = DAOUserImpl()
 
     route("/user") {
-        get("/admin_name") {
+        get("/admin") {
             val allUser = daoUser.allUser()
             call.respond(FreeMarkerContent("admin_page.ftl", mapOf(
-                "users" to allUser, "user" to allUser
+                "users" to allUser, "user" to allUser, "status" to "admin"
+            ), ""))
+        }
+        get("/main_admin") {
+            val allUser = daoUser.allUser()
+            call.respond(FreeMarkerContent("admin_page.ftl", mapOf(
+                "users" to allUser, "user" to allUser, "admin" to "Администратор", "status" to "main admin"
             ), ""))
         }
         post("/admin_name") {
+
             val params = call.receiveParameters()
             val email = params["email"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             var role = params["select_role"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+            val status = params["status"] ?: return@post call.respond(HttpStatusCode.BadRequest)
 
-            val allUser = daoUser.allUser()
+            if (daoUser.user(email)!!.role != "main admin") {
+                when(role) {
+                    "Обычный пользователь" -> role = "user"
+                    "Сотрудник" -> role = "employee"
+                    "Администратор" -> role = "admin"
+                }
 
-            when(role) {
-                "Обычный пользователь" -> role = "user"
-                "Сотрудник" -> role = "employee"
-                "Администратор" -> role = "admin"
+                daoUser.updateRole(email, role)
             }
 
-            daoUser.updateRole(email, role)
-            call.respond(FreeMarkerContent("admin_page.ftl", mapOf(
-                "users" to allUser, "user" to allUser
-            ), ""))
+            if (status == "main admin")
+                call.respondRedirect("/user/main_admin")
+            else call.respondRedirect("/user/admin")
+
         }
     }
 }
