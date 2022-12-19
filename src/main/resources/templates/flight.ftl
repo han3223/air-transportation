@@ -12,7 +12,7 @@
 <div id="main_block">
     <div id="form_div">
         <form action="/user/employee_name/add_new_flight" method="post">
-            <select name="Point_of_departure" id="">
+            <label for=""></label><select name="Point_of_departure" id="">
                 <#list data as list>
                     <option value="${list?index}" name=""><h2>${list}</h2></option>
                 </#list>
@@ -29,7 +29,9 @@
             </select>
             <input type="time" name="Departure_time" id="">
             <input type="time" name="Arrival_time" id="">
-            <input type="text" name="Distance" placeholder="Расстояние">
+            <label>
+                <input type="text" name="Distance" placeholder="Расстояние">
+            </label>
             <select name="Brand_name" id="">
                 <#list brands as brand>
                     <option value="${brand?index}"><h2>${brand}</h2></option>

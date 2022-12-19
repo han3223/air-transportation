@@ -1,0 +1,28 @@
+--1 Выдать всех пользоваелей с ролью админ, сотрудник, пользователь
+select * from users where "Role" = 'admin';
+select * from users where "Role" = 'user';
+select * from users where "Role" = 'employee';
+--2 Выдать количество админов и количество обычных пользователей
+select count(*) as count_admin, (
+select count(*) as users from users where "Role" = 'user')
+from users
+where "Role" = 'admin';
+--4 Выдать хотя бы один рейс где id перевозчика совпадает
+select * from flights
+         where exists(select * from carriers where flights."Carrier_id" = carriers."ID_carrier");
+--5 Выдать рейсы на которые не куплен ни один билет
+select "Flight_number" from flights except select "Flight_number" from tickets;
+--6
+
+--7 Выдать среднюю цену билетов на сегодняшний день
+select avg("Ticket_price") from tickets where "Departure_date" = current_date;
+--8 Выдать билет и информацию о пассажире на этот билет
+select * from tickets t inner join passengers p on t."Id_passenger" = p."ID_passenger";
+--9 Выдать билеты и информацию о бренде самолёта, где дата прилёта и отлёта - это сегодняшний день
+select * from tickets inner join aircraftbrands a on a."ID_brand" = tickets."Id_brand" where "Departure_date" = current_date and "Arrival_date" = current_date;
+--10 Выдать номер рейса, город отправления, город прибытия и дистанцию между ними
+select "Flight_number" ,flights."Distance", a."Airport_name", a2."Airport_name" from flights
+    inner join airportsdirectory a on a."Code_airport" = flights."Point_of_departure"
+    inner join airportsdirectory a2 on a2."Code_airport" = flights."Point_of_arrival";
+--11 Выдаёт номер билета, цену билета и тип места в самолёте
+select "Number_of_ticket" ,"Ticket_price", l."Place" from tickets inner join locationtypes l on l."Seat_category_code" = tickets."Seat_category_code";

@@ -3,13 +3,11 @@ package com.example.frontend
 import com.example.database.dao.DAOUser
 import com.example.database.dao.DAOUserImpl
 import io.ktor.http.*
-import io.ktor.http.cio.HttpMessage
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.coroutines.runBlocking
 
 
 fun Route.getHomepageAdmin() {

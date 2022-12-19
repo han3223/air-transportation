@@ -98,7 +98,9 @@ fun Route.logIn() {
                     val theme = params["theme"] ?: return@post call.respond(HttpStatusCode.BadRequest)
                     val text = params["text"] ?: return@post call.respond(HttpStatusCode.BadRequest)
 
-                    daoReview.addNewReview(firstName, lastName, theme, text)
+                    if (theme != "" && text != "") {
+                        daoReview.addNewReview(firstName, lastName, theme, text)
+                    }
 
                     call.respondRedirect("/${firstName}/${lastName}")
                 }
@@ -110,9 +112,11 @@ fun Route.logIn() {
         val theme = params["theme"] ?: return@post call.respond(HttpStatusCode.BadRequest)
         val text = params["text"] ?: return@post call.respond(HttpStatusCode.BadRequest)
 
-        daoReview.apply {
-            runBlocking {
-                addNewReview("Неизвестный", "Пользователь", theme, text)
+        if (theme != "" && text != "") {
+            daoReview.apply {
+                runBlocking {
+                    addNewReview("Неизвестный", "Пользователь", theme, text)
+                }
             }
         }
         call.respondRedirect("/")

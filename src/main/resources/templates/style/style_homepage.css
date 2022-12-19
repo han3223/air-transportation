@@ -506,7 +506,7 @@ input[type="radio"]:checked+.rad-design::before {
 #special_offer>a {
     width: 80%;
     height: 40px;
-    font-family: Biennale bold;
+    font-family: Biennale bold, serif;
     margin-top: 15px;
 }
 
@@ -570,7 +570,7 @@ li {
 }
 
 #price>p {
-    font-family: Biennale bold;
+    font-family: Biennale bold, serif;
     font-size: 150%;
 }
 
@@ -581,7 +581,7 @@ li {
 }
 
 #location_type>p {
-    font-family: Biennale bold;
+    font-family: Biennale bold, serif;
     font-size: 65%;
     color: grey;
 }
@@ -592,7 +592,7 @@ li {
     min-height: 40px;
     background-color: #e87f2c;
     border-radius: 5px;
-    font-family: Biennale;
+    font-family: Biennale, serif;
     font-size: 140%;
     margin-bottom: 10px;
 }
@@ -627,7 +627,7 @@ li {
 }
 
 #name_carrier>p {
-    font-family: Biennale bold;
+    font-family: Biennale bold, serif;
     font-size: 150%;
 }
 
@@ -655,7 +655,7 @@ li {
 }
 
 #time>p {
-    font-family: Biennale bold;
+    font-family: Biennale bold, serif;
     font-size: 150%;
 }
 
@@ -665,7 +665,7 @@ li {
 }
 
 #city>p {
-    font-family: Biennale bold;
+    font-family: Biennale bold, serif;
     font-size: 65%;
     color: grey;
 }
@@ -677,7 +677,7 @@ li {
 }
 
 #date>p {
-    font-family: Biennale bold;
+    font-family: Biennale bold, serif;
     font-size: 70%;
     color: grey;
 }
@@ -775,7 +775,7 @@ li {
 /*все коментарии*/
 
 #all_reviews {
-    width: calc(50% - 1px);
+    width: calc(49% - 1px);
     float: left;
     border-left: 1px solid;
 }

@@ -17,13 +17,13 @@ fun Route.getHomepageEmployee() {
     val daoCarrier: DAOCarrier = DAOCarrierImpl()
     val daoFlight: DAOFlight = DAOFlightImpl()
     val daoLocationType: DAOLocationType = DAOLocationTypeImpl()
-    val daoPassengers: DAOPassengers = DAOPassengersImpl()
+    DAOPassengersImpl()
 
     route("/user") {
         route("/employee_name") {
             get("") {
                 call.respond(FreeMarkerContent("employeepage.ftl", null))
-                val params = call.receiveParameters()
+                call.receiveParameters()
             }
             post("/next") {
                 call.respondRedirect("/user/employee_name/add_flight")

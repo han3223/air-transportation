@@ -1,6 +1,9 @@
 package com.example.frontend
 
-import com.example.database.dao.*
+import com.example.database.dao.DAOReview
+import com.example.database.dao.DAOReviewImpl
+import com.example.database.dao.DAOUser
+import com.example.database.dao.DAOUserImpl
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
@@ -11,12 +14,6 @@ import kotlinx.coroutines.runBlocking
 
 fun Route.getHomepage() {
     val daoUser: DAOUser = DAOUserImpl()
-    val daoAircraftBrand: DAOAircraftBrand = DAOAircraftBrandImpl()
-    val daoAirportDirectory: DAOAirportDirectory = DAOAirportDirectoryImpl()
-    val daoCarrier: DAOCarrier = DAOCarrierImpl()
-    val daoFlight: DAOFlight = DAOFlightImpl()
-    val daoLocationType: DAOLocationType = DAOLocationTypeImpl()
-    val daoPassengers: DAOPassengers = DAOPassengersImpl()
     val daoReview: DAOReview = DAOReviewImpl()
 
     route("") {
@@ -65,7 +62,6 @@ fun Route.getHomepage() {
         }
     }
 }
-
 fun Application.getHomepageRouting() {
     routing { getHomepage() }
 }

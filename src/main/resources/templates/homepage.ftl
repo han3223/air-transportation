@@ -17,7 +17,7 @@
         <div id="background_reg" onClick="closeFormReg()"></div>
         <div id="block_form_reg">
             <form action="/" style="text-align: center;" method="post">
-                <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 10px;">Регистрация</p>
+                <p style="font-family: Biennale,serif; font-size: 207%; float: inherit; margin-bottom: 10px;">Регистрация</p>
                 <label>
                     <input type="text" name="first_name" class="inp_reg" placeholder="Имя" pattern="[a-zA-Z]+" oninvalid="setCustomValidity('Поле должно быть заполнено латинскими символами!')">
                 </label>
@@ -45,7 +45,7 @@
         <div id="background_reg" onClick="closeFormAuth()"></div>
         <div id="block_form_auth">
             <form action="/user" style="text-align: center;" method="post">
-                <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 10px;">Вход</p>
+                <p style="font-family: Biennale,serif; font-size: 207%; float: inherit; margin-bottom: 10px;">Вход</p>
                 <label>
                     <input type="email" name="email" class="inp_reg" placeholder="E-mail">
                 </label>
@@ -153,21 +153,40 @@
                                                     <div id="body_form_ticket">
                                                         <div id="background_reg" onClick="closeFormBuyTicket()"></div>
                                                         <div id="block_form_ticket">
-                                                            <p style="font-family: Biennale; font-size: 207%; float: inherit; margin-bottom: 10px;">Заполните данные</p>
-                                                            <input type="" name="flight_number" value="${flight.flight_number}" style="display: none">
-                                                            <input type="" name="seat_category_code" value="${location.seat_category_code}" style="display: none">
-                                                            <input type="" name="brand_id" value="${brand.id}" style="display: none">
-                                                            <input type="" name="carrier_id" value="${carrier.id}" style="display: none">
-                                                            <input type="" name="ticket_price" value="${location.seat_price_per_kilometers * flight.distance * brand.cost_factor}" style="display: none">
-                                                            <input type="" name="departure_date" value="${date_departure}" style="display: none">
-                                                            <input type="" name="arrival_date" value="${date_departure}" style="display: none">
-                                                            <input type="" name="distance" value="${flight.distance}" style="display: none">
-                                                            <input type="text" name="last_name" id="" class="inp_reg" placeholder="Фамилия" style="text-transform:uppercase">
-                                                            <input type="text" name="first_name" id="" class="inp_reg" placeholder="Имя"  style="text-transform:uppercase">
-                                                            <input type="text" name="middle_name" id="" class="inp_reg" placeholder="Отчество"  style="text-transform:uppercase">
-                                                            <input type="text" name="passport_series" id="" class="inp_reg" placeholder="Серия паспорта" minlength="4" maxlength="4">
-                                                            <input type="text" name="passport_id" id="" class="inp_reg" placeholder="Номер паспорта" minlength="6" maxlength="6">
-                                                            <input type="submit" name="" id="" class="inp_reg" value="Купить билет">
+                                                            <p style="font-family: Biennale,serif; font-size: 207%; float: inherit; margin-bottom: 10px;">Заполните данные</p>
+                                                            <label>
+                                                                <input type="text" name="flight_number" value="${flight.flight_number}" style="display: none">
+                                                            </label>
+                                                            <label>
+                                                                <input type="text" name="seat_category_code" value="${location.seat_category_code}" style="display: none">
+                                                            </label>
+                                                            <label>
+                                                                <input type="text" name="brand_id" value="${brand.id}" style="display: none">
+                                                            </label>
+                                                            <label>
+                                                                <input type="text" name="carrier_id" value="${carrier.id}" style="display: none">
+                                                            </label>
+                                                            <label>
+                                                                <input type="text" name="ticket_price" value="${location.seat_price_per_kilometers * flight.distance * brand.cost_factor}" style="display: none">
+                                                            </label>
+                                                            <label>
+                                                                <input type="text" name="departure_date" value="${date_departure}" style="display: none">
+                                                            </label>
+                                                            <label>
+                                                                <input type="text" name="arrival_date" value="${date_departure}" style="display: none">
+                                                            </label>
+                                                            <label>
+                                                                <input type="text" name="distance" value="${flight.distance}" style="display: none">
+                                                            </label>
+                                                            <input type="text" name="last_name" id="" class="inp_reg"
+                                                                   placeholder="Фамилия"
+                                                                   style="text-transform:uppercase">
+                                                            <label for=""></label><input type="text" name="first_name" id="" class="inp_reg" placeholder="Имя" style="text-transform:uppercase">
+                                                            <label for=""></label><input type="text" name="middle_name" id="" class="inp_reg" placeholder="Отчество" style="text-transform:uppercase">
+                                                            <label for=""></label><input type="text" name="passport_series" id="" class="inp_reg" placeholder="Серия паспорта" minlength="4" maxlength="4">
+                                                            <label for=""></label><input type="text" name="passport_id" id="" class="inp_reg" placeholder="Номер паспорта" minlength="6" maxlength="6">
+                                                            <input type="submit" name="" id="" class="inp_reg"
+                                                                   value="Купить билет">
                                                         </div>
                                                     </div>
                                                 </form>
@@ -235,17 +254,21 @@
                         <label for="text_reviews"></label><textarea id="text_reviews" name="text" placeholder="Текст комментария"></textarea>
                     </div>
                     <#if first_name?has_content>
-                        <input type="text" value="${first_name}" style="display: none">
-                        <input type="text" value="${last_name}" style="display: none">
+                        <label>
+                            <input type="text" value="${first_name}" style="display: none">
+                        </label>
+                        <label>
+                            <input type="text" value="${last_name}" style="display: none">
+                        </label>
                     </#if>
                     <input type="submit" id="input_buy_ticket" value="Отправить коментарий" style="width: 80%">
                 </form>
             </div>
             <div id="all_reviews">
                 <#list reviews as review>
-                    <div style="margin-top: 23px; <#if 1 < review?index>display: none; margin-bottom: 10px</#if>" class="review">
+                    <div style="margin-top: 23px; <#if 1 < review?index>display: none;</#if> <#if review?is_last>margin-bottom: 10px;</#if>" class="review">
                         <div id="body_reviews_ava">
-                            <div id="reviews_ava" style="margin-right: 20px"></div>
+                            <div id="reviews_ava" style="margin-right: 20px;"></div>
                             <div>
                                 <div style="display: inline-block; margin-top: 25px; height: 20px; width: 70%"><h4>${review.first_name}</h4></div>
                                 <div style="width: 70%"><h4>${review.last_name}</h4></div>
@@ -292,9 +315,9 @@
         </div>
         <div id="logo_profile">
             <div id="company" style="width: 70%; float: right; min-width: 215px;">
-                <a href="homepage.html"><div id="logo"></div></a>
+                <a href="http://localhost:8080"><div id="logo"></div></a>
                 <div id="name_firm">
-                    <p style="font-family: Biennale,serif; font-size: 207%; float: inherit; user-select: none;"><a href="homepage.html">FastFlights</a><p>
+                    <p style="font-family: Biennale,serif; font-size: 207%; float: inherit; user-select: none;"><a href="http://localhost:8080">FastFlights</a><p>
                 </div>
             </div>
 

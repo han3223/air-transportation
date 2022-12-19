@@ -13,7 +13,9 @@
 <body>
     <div id="main_div">
         <form action="/user/admin_name" method="post">
-            <input type="text" style="display: none" value="${status}" name="status">
+            <label>
+                <input type="text" style="display: none" value="${status}" name="status">
+            </label>
             <p>${status}</p>
             <label for=""></label><input type="email" name="email" id="" placeholder="Email">
             <label>

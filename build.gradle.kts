@@ -43,4 +43,6 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     implementation("org.postgresql:postgresql:42.5.0")
+    implementation("io.ktor:ktor-server-auth:$ktor_version")
+
 }
