@@ -47,6 +47,67 @@ input, select {
 	justify-content: center;
 }
 
+#list_only_user {
+	width: 70%;
+	min-height: 100vh;
+	float: right;
+	display: none;
+	justify-content: center;
+}
 
+#list_only_admin {
+	width: 70%;
+	min-height: 100vh;
+	float: right;
+	display: none;
+	justify-content: center;
+}
 
+#list_only_employee {
+	width: 70%;
+	min-height: 100vh;
+	float: right;
+	display: none;
+	justify-content: center;
+}
+
+#list_admin_user {
+	width: 70%;
+	min-height: 100vh;
+	float: right;
+	display: none;
+	justify-content: center;
+}
+
+#carrier_flight {
+	width: 70%;
+	min-height: 100vh;
+	float: right;
+	display: none;
+	justify-content: center;
+}
+
+#ticket_passenger {
+	width: 70%;
+	min-height: 100vh;
+	float: right;
+	display: none;
+	justify-content: center;
+}
+
+#ticket_brand {
+	width: 70%;
+	min-height: 100vh;
+	float: right;
+	display: none;
+	justify-content: center;
+}
+
+#avg_ticket {
+	width: 70%;
+	min-height: 100vh;
+	float: right;
+	display: none;
+	justify-content: center;
+}
 

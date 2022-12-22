@@ -31,7 +31,11 @@ fun Route.logIn() {
                     val firstName = call.parameters.getOrFail<String>("first_name")
                     val lastName = call.parameters.getOrFail<String>("last_name")
                     val allReviews = daoReview.allReview()
-                    call.respond(FreeMarkerContent("homepage.ftl", mapOf("first_name" to firstName, "last_name" to lastName, "reviews" to allReviews, "review" to allReviews)))
+                    call.respond(FreeMarkerContent("homepage.ftl",
+                        mapOf("first_name" to firstName,
+                            "last_name" to lastName,
+                            "reviews" to allReviews,
+                            "review" to allReviews)))
                 }
 
                 post("/buy_flight") {
@@ -152,7 +156,6 @@ fun Route.logIn() {
                 else
                     i++
             }
-
             pars(flightList[0].departure_time, flightList[0].arrival_time)
 
             if (flightList.isNotEmpty()) {
@@ -202,16 +205,26 @@ fun Route.logIn() {
         var ticketPrice = params["ticket_price"] ?: return@post call.respond(HttpStatusCode.BadRequest)
         val departureDate = params["departure_date"] ?: return@post call.respond(HttpStatusCode.BadRequest)
         val arrivalDate = params["arrival_date"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-        val distance = params["distance"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+        var distance = params["distance"] ?: return@post call.respond(HttpStatusCode.BadRequest)
 
         val readingFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val dateDeparture = LocalDate.parse(departureDate, readingFormatter)
         val dateArrival = LocalDate.parse(arrivalDate, readingFormatter)
 
+        distance = distance.filter { !it.isWhitespace() }
+
         ticketPrice = ticketPrice.filter { !it.isWhitespace() }.replace(',', '.')
         daoTicket.apply {
             runBlocking {
-                daoTicket.addNewTicket(flightNumber.toInt(), seatCode.toInt(), passenger!!, brandId.toInt(), carrierId.toInt(), ticketPrice.toFloat(), dateDeparture, dateArrival, distance.toInt())
+                daoTicket.addNewTicket(flightNumber.toInt(),
+                    seatCode.toInt(),
+                    passenger!!,
+                    brandId.toInt(),
+                    carrierId.toInt(),
+                    ticketPrice.toFloat(),
+                    dateDeparture,
+                    dateArrival,
+                    distance.toInt())
             }
         }
 

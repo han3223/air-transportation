@@ -4,6 +4,7 @@ import com.example.database.dao.DAOReview
 import com.example.database.dao.DAOReviewImpl
 import com.example.database.dao.DAOUser
 import com.example.database.dao.DAOUserImpl
+import com.example.database.dataClass.User
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.freemarker.*
@@ -11,6 +12,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.runBlocking
+import java.sql.DriverManager
 
 fun Route.getHomepage() {
     val daoUser: DAOUser = DAOUserImpl()
@@ -26,19 +28,19 @@ fun Route.getHomepage() {
             var firstName = params["first_name"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             var lastName = params["last_name"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             val email = params["email"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-            val password = params["password"] ?: return@post call.respond(HttpStatusCode.BadRequest)
+            var password = params["password"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             val phone = params["phone"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             firstName = translate(firstName)
             lastName = translate(lastName)
 
             if (daoUser.user(email) == null) {
-                println(daoUser.user(email))
                 daoUser.apply {
                     runBlocking {
+                        password = heshPassword(password)
                         addNewUser(firstName, lastName, email, password, phone)
                     }
                 }
-                call.respond(FreeMarkerContent("homepage.ftl", mapOf("first_name" to firstName, "last_name" to lastName)))
+                call.respondRedirect("/${firstName}/${lastName}")
             }
             else
                 call.respondText { "Пользователь уже существует!" }
@@ -47,13 +49,15 @@ fun Route.getHomepage() {
             val params = call.receiveParameters()
             val login = params["email"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             val password = params["password"] ?: return@post call.respond(HttpStatusCode.BadRequest)
-            val user = daoUser.user(login, password)
-            if (user == null)
+
+            val listUsers = checkPassword(login, password)
+
+            if (listUsers.isEmpty())
                 println("Пользователя не существует!")
             else {
                 println("Пользователь существует.")
-                when(user.role) {
-                    "user" -> call.respondRedirect("/${user.firstName}/${user.lastName}")
+                when(listUsers[0].role) {
+                    "user" -> call.respondRedirect("/${listUsers[0].firstName}/${listUsers[0].lastName}")
                     "admin" -> call.respondRedirect("/user/admin")
                     "main admin" -> call.respondRedirect("/user/main_admin")
                     "employee" -> call.respondRedirect("/user/employee_name")
@@ -61,6 +65,46 @@ fun Route.getHomepage() {
             }
         }
     }
+}
+
+fun heshPassword(password: String): String {
+    Class.forName("org.postgresql.Driver")
+    val database = DriverManager.getConnection("jdbc:postgresql://172.20.8.18:5432/kp0091_05", "st0091", "qwerty91")
+
+    val sqlRequestAll = """
+                select crypt('$password', gen_salt('md5'));
+            """.trimIndent()
+    val queryRequestAll = database.prepareStatement(sqlRequestAll)
+    val resultRequestAll = queryRequestAll.executeQuery()
+    var hash = ""
+    while (resultRequestAll.next()) {
+        hash = resultRequestAll.getString(1)
+    }
+    return hash
+}
+
+fun checkPassword(login: String, password: String): List<User> {
+    Class.forName("org.postgresql.Driver")
+    val database = DriverManager.getConnection("jdbc:postgresql://172.20.8.18:5432/kp0091_05", "st0091", "qwerty91")
+
+    val sqlRequestAll = """
+                SELECT * FROM users where "Email" = '$login' and "Password" = crypt('${password}', "Password");
+            """.trimIndent()
+    val queryRequestAll = database.prepareStatement(sqlRequestAll)
+    val resultRequestAll = queryRequestAll.executeQuery()
+    val list = mutableListOf<User>()
+
+    while(resultRequestAll.next()) {
+        val id_user = resultRequestAll.getInt(1)
+        val firstName = resultRequestAll.getString(2)
+        val lastName = resultRequestAll.getString(3)
+        val email = resultRequestAll.getString(4)
+        val passwordd = resultRequestAll.getString(5)
+        val phone = resultRequestAll.getString(6)
+        val role = resultRequestAll.getString(7)
+        list.add(User(id_user, firstName, lastName, email, passwordd, phone, role))
+    }
+    return list
 }
 fun Application.getHomepageRouting() {
     routing { getHomepage() }

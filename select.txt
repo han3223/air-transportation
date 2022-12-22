@@ -26,3 +26,40 @@ select "Flight_number" ,flights."Distance", a."Airport_name", a2."Airport_name" 
     inner join airportsdirectory a2 on a2."Code_airport" = flights."Point_of_arrival";
 --11 Выдаёт номер билета, цену билета и тип места в самолёте
 select "Number_of_ticket" ,"Ticket_price", l."Place" from tickets inner join locationtypes l on l."Seat_category_code" = tickets."Seat_category_code";
+
+--Представления
+--1 Выдаёт номер, цену и информацию о пассажире
+create view ticket_and_passenger as
+    select "Number_of_ticket", "Surname", "Name", "Ticket_price" from tickets t, passengers p
+           where t."Id_passenger" = p."ID_passenger";
+select * from ticket_and_passenger;
+
+--2
+create view count_ticket_Pulkovo as
+    select count(*) from tickets
+        inner join flights f on tickets."Flight_number" = f."Flight_number"
+        inner join airportsdirectory a on a."Code_airport" = f."Point_of_departure"
+        where a."Airport_name" = 'Пулково';
+select * from count_ticket_Pulkovo;
+
+--3
+create view all_info_ticket as
+    select "Number_of_ticket",
+           f."Flight_number",
+           "Place",
+           "Surname",
+           "Name",
+           "Brand",
+           "Company_name",
+           "Ticket_price",
+           a."Airport_name" as Departure_city,
+           a3."Airport_name" as Arrival_city,
+           tickets."Distance" from tickets
+                inner join flights f on tickets."Flight_number" = f."Flight_number"
+                inner join airportsdirectory a on a."Code_airport" = f."Point_of_departure"
+                inner join airportsdirectory a3 on a3."Code_airport" = f."Point_of_arrival"
+                inner join locationtypes l on l."Seat_category_code" = tickets."Seat_category_code"
+                inner join aircraftbrands a2 on a2."ID_brand" = tickets."Id_brand"
+                inner join carriers c on c."ID_carrier" = tickets."Id_carrier"
+                inner join passengers p on p."ID_passenger" = tickets."Id_passenger";
+select * from all_info_ticket;
